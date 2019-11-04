@@ -5,8 +5,8 @@
  */
 package com.controllers;
 
-import com.beans.CourseBean;
-import com.dtos.CourseDto;
+import com.beans.LessonBean;
+import com.dtos.LessonDto;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -17,13 +17,13 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author HP
+ * @author ASUS
  */
-public class CourseController extends HttpServlet {
+public class lessonController extends HttpServlet {
 
     private final String HOME_PAGE = "adminFolder/admin.jsp";
     private final String ERROR_PAGE = "error.jsp";
-    private final String PAGE = "loadCourse";
+    private final String PAGE = "loadLesson";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,11 +39,13 @@ public class CourseController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String url = HOME_PAGE;
         try {
+            LessonBean bean = new LessonBean();
             String key = request.getParameter("key");
-            CourseBean bean = new CourseBean();
             switch (key) {
-                case "loadCourse":
-                    request = loadAllCourses(request, bean);
+                case "getLessonsById":
+                    request = getLessonsById(request, bean);
+                    break;
+
             }
 
         } catch (Exception e) {
@@ -54,15 +56,15 @@ public class CourseController extends HttpServlet {
         }
     }
 
-    private HttpServletRequest loadAllCourses(HttpServletRequest request, CourseBean bean) throws ClassNotFoundException, SQLException {
-        ArrayList<CourseDto> list = bean.loadAllCourse();
+    private HttpServletRequest getLessonsById(HttpServletRequest request, LessonBean bean) throws ClassNotFoundException, SQLException {
+        String courseId = request.getParameter("txtId");
+        ArrayList<LessonDto> listLesson = bean.loadLessonByCourseId(courseId);
+        request.setAttribute("LISTLESSON", listLesson);
         request.setAttribute("PAGE", PAGE);
-        request.setAttribute("LISTCOURSE", list);
         return request;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-
     /**
      * Handles the HTTP <code>GET</code> method.
      *
