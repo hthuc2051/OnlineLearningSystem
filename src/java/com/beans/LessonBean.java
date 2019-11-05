@@ -5,7 +5,11 @@
  */
 package com.beans;
 
+import com.dtos.LessonDto;
+import com.models.LessonDao;
 import java.io.Serializable;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -47,5 +51,10 @@ public class LessonBean implements Serializable {
     public void setVideoLink(String videoLink) {
         this.videoLink = videoLink;
     }
-    
+
+    public ArrayList<LessonDto> loadLessonByCourseId(String courseId) throws ClassNotFoundException, SQLException {
+        LessonDao dao = new LessonDao();
+        ArrayList<LessonDto> listLesson = dao.getLessonByCourseId(courseId);
+        return listLesson;
+    }
 }

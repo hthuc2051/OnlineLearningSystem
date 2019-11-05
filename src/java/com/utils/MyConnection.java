@@ -18,7 +18,7 @@ public class MyConnection implements Serializable{
     public static Connection getConnection() throws ClassNotFoundException, SQLException{
         Connection con =null;
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        String url ="jdbc:sqlserver://localhost:1433;databaseName=dbStudySystem";
+        String url ="jdbc:sqlserver://localhost:1433;databaseName=dbLearningOnlineSystem";
         con = DriverManager.getConnection(url,"sa","12");
         return con;
     }
