@@ -5,8 +5,8 @@
  */
 package com.controllers;
 
-import com.beans.CourseBean;
-import com.dtos.CourseDto;
+import com.beans.UserBean;
+import com.dtos.UserDto;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -17,13 +17,13 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author HP
+ * @author ASUS
  */
-public class CourseController extends HttpServlet {
+public class UserController extends HttpServlet {
 
     private final String HOME_PAGE = "adminFolder/admin.jsp";
     private final String ERROR_PAGE = "error.jsp";
-    private final String PAGE = "loadCourse";
+    private final String PAGE = "loadUser";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,33 +39,32 @@ public class CourseController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String url = HOME_PAGE;
         try {
-            request.removeAttribute("STATUS");
             String key = request.getParameter("key");
-            CourseBean bean = new CourseBean();
+            UserBean bean = new UserBean();
             switch (key) {
-                case "loadCourse":
-                    request = loadAllCourses(request, bean);
+                case "loadUser":
+                    request = loadAllUser(request, bean);
                     break;
-                case "insertCourse":
-                    request = insertCourse(request, bean);
+                case "insertUser":
+                    request = insertUser(request, bean);
                     break;
-                case "courseDetail":
-                    request.setAttribute("courseName", request.getParameter("courseName"));
-                    request.setAttribute("courseId", request.getParameter("courseId"));
-                    request.setAttribute("courseDescription", request.getParameter("courseDescription"));
-                    url = "adminFolder/courseDetail.jsp";
+                case "userDetail":
+                    request.setAttribute("name", request.getParameter("name"));
+                    request.setAttribute("id", request.getParameter("id"));
+                    request.setAttribute("role", request.getParameter("role"));
+                    url = "adminFolder/userDetail.jsp";
                     break;
-                case "updateCourse":
-                    request = updateCourse(request, bean);
+                case "updateUser":
+                    request = updateUser(request, bean);
                     break;
-                case "deleteCourse":
-                    request = deleteCourse(request, bean);
+                case "deleteUser":
+                    request = deleteUser(request, bean);
                     break;
-                case "getUserCourse":
-                    request = getUserCourse(request, bean);
+                case "editProfile":
+                    request = getUserById(request, bean);
+                    url = "adminFolder/userProfile.jsp";
                     break;
             }
-
         } catch (Exception e) {
             System.out.println(e.toString());
             url = ERROR_PAGE;
@@ -74,63 +73,65 @@ public class CourseController extends HttpServlet {
         }
     }
 
-    private HttpServletRequest loadAllCourses(HttpServletRequest request, CourseBean bean) throws ClassNotFoundException, SQLException {
-        ArrayList<CourseDto> list = bean.loadAllCourse();
+    private HttpServletRequest loadAllUser(HttpServletRequest request, UserBean bean) throws ClassNotFoundException, SQLException {
+        ArrayList<UserDto> listUser = bean.getAllUser();
         request.setAttribute("PAGE", PAGE);
-        request.setAttribute("LISTCOURSE", list);
+        request.setAttribute("LISTUSER", listUser);
         return request;
     }
 
-    private HttpServletRequest insertCourse(HttpServletRequest request, CourseBean bean) throws ClassNotFoundException, SQLException {
-        String courseName = request.getParameter("txtCourseName");
-        String description = request.getParameter("txtDescription");
-        bean.setName(courseName);
-        bean.setDescription(description);
-        boolean check = bean.insertCourse();
+    private HttpServletRequest insertUser(HttpServletRequest request, UserBean bean) throws ClassNotFoundException, SQLException {
+        String userName = request.getParameter("txtUsername");
+        String role = request.getParameter("txtRole");
+        bean.setName(userName);
+        bean.setRole(role);
+        boolean check = bean.insetUser();
         if (check) {
             request.setAttribute("STATUS", "Insert successfully!");
         } else {
             request.setAttribute("STATUS", "Insert fail!");
         }
-        request = loadAllCourses(request, bean);
+        request = loadAllUser(request, bean);
         return request;
     }
 
-    private HttpServletRequest updateCourse(HttpServletRequest request, CourseBean bean) throws ClassNotFoundException, SQLException {
-        String courseName = request.getParameter("courseName");
-        String courseId = request.getParameter("courseId");
-        String description = request.getParameter("txtDescription");
-        bean.setName(courseName);
-        bean.setDescription(description);
-        bean.setId(Integer.parseInt(courseId));
-        boolean check = bean.updateCourse();
+    private HttpServletRequest updateUser(HttpServletRequest request, UserBean bean) throws ClassNotFoundException, SQLException {
+        String name = request.getParameter("name");
+        String id = request.getParameter("id");
+        String role = request.getParameter("role");
+        bean.setName(name);
+        bean.setId(Integer.parseInt(id));
+        bean.setRole(role);
+        boolean check = bean.updateUser();
         if (check) {
             request.setAttribute("STATUS", "Update successfully!");
         } else {
             request.setAttribute("STATUS", "Update fail!");
         }
-        request = loadAllCourses(request, bean);
+        request = loadAllUser(request, bean);
         return request;
     }
 
-    private HttpServletRequest deleteCourse(HttpServletRequest request, CourseBean bean) throws ClassNotFoundException, SQLException {
-        String courseId = request.getParameter("courseId");
-        bean.setId(Integer.parseInt(courseId));
-        boolean check = bean.deleteCourse();
+    private HttpServletRequest deleteUser(HttpServletRequest request, UserBean bean) throws ClassNotFoundException, SQLException {
+        String id = request.getParameter("id");
+        bean.setId(Integer.parseInt(id));
+        boolean check = bean.deleteUser();
         if (check) {
             request.setAttribute("STATUS", "Delete successfully!");
         } else {
             request.setAttribute("STATUS", "Delete fail!");
         }
-        request = loadAllCourses(request, bean);
+        request = loadAllUser(request, bean);
         return request;
     }
 
-    private HttpServletRequest getUserCourse(HttpServletRequest request, CourseBean bean) throws ClassNotFoundException, SQLException {
-        String userId = request.getParameter("txtId");
-        ArrayList<CourseDto> listCourse = bean.getUserCourse(Integer.parseInt(userId));
-        request.setAttribute("LISTCOURSE", listCourse);
-        request.setAttribute("PAGE", PAGE);
+    private HttpServletRequest getUserById(HttpServletRequest request, UserBean bean) throws ClassNotFoundException, SQLException {
+        String id = "1";
+        bean.setId(Integer.parseInt(id));
+        UserDto dto = bean.getUserById();
+        request.setAttribute("name", dto.getName());
+        request.setAttribute("id", dto.getId());
+        request.setAttribute("role", dto.getRole());
         return request;
     }
 

@@ -50,22 +50,96 @@ body {
     #header{
         margin-top: 30px;
     }
+}
+.input_box{
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    padding: 10%;
+}
 
-    .input_box{
-        width: 100%;
-        margin: 0 auto;
-        text-align: center;
-        padding: 20%;
-    }
-    
-    .btn_insert{
-        margin-top: 10px;
-        border-radius: 4px;
-    }
-    
-    .insert_box{
-        width: 50%;
-        border-radius: 16px;
-        text-align: center
-    }
+.btn_insert{
+    margin-top: 30px;
+    width: 50%;
+    border-radius: 16px;
+    border: 1px solid;
+}
+
+.insert_box{
+    margin-top: 25px;
+    width: 50%;
+    border-radius: 5px;
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    text-align: left;
+}
+.center_boxs{
+    background-color: white;
+    height: 300px;
+    text-align: center;
+    margin: 0 auto;
+    padding-top: 50px;
+    width: 45%;
+    border-radius: 5px;
+    border-bottom: 1px solid lightgrey;
+    border-right: 1px solid lightgrey;
+    border-top: 0.5px solid lightgrey;
+    border-left: 0.5px solid lightgrey;
+}
+
+.center_boxs_detail{
+    background-color: white;
+    height: 350px;
+    text-align: center;
+    margin: 0 auto;
+    padding-top: 50px;
+    width: 45%;
+    border-radius: 5px;
+    border-bottom: 1px solid lightgrey;
+    border-right: 1px solid lightgrey;
+    border-top: 0.5px solid lightgrey;
+    border-left: 0.5px solid lightgrey;
+}
+.btn_delete{
+    margin-top: 20px;
+    width: 50%;
+    border-radius: 16px;
+    border: 1px solid;
+}
+.iframe{
+    float: left;
+    height: 300px;
+    width: 50%;
+    margin-left: 10px
+}
+
+.left_iframe{
+    float: left;
+    width: 40%;
+    height: 300px;
+    text-align: left;
+    margin-left: 60px;
+}
+.center_boxs_lesson{
+    background-color: white;
+    height: 400px;
+    text-align: center;
+    margin: 0 auto;
+    padding-top: 50px;
+    border-radius: 5px;
+    border-bottom: 1px solid lightgrey;
+    border-right: 1px solid lightgrey;
+    border-top: 0.5px solid lightgrey;
+    border-left: 0.5px solid lightgrey;
+}
+
+.insert_box_lesson{
+    margin-top: 10px;
+    width: 50%;
+    border-radius: 5px;
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    text-align: left;
 }

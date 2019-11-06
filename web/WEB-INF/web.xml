@@ -8,6 +8,10 @@
         <servlet-name>lessonController</servlet-name>
         <servlet-class>com.controllers.LessonController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UserController</servlet-name>
+        <servlet-class>com.controllers.UserController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CourseController</servlet-name>
         <url-pattern>/CourseController</url-pattern>
@@ -15,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>lessonController</servlet-name>
         <url-pattern>/lessonController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserController</servlet-name>
+        <url-pattern>/UserController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

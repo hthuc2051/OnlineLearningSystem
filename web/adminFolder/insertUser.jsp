@@ -1,6 +1,6 @@
 <%-- 
-    Document   : courseDetail
-    Created on : Nov 4, 2019, 8:35:02 PM
+    Document   : insertUser
+    Created on : Nov 6, 2019, 12:48:29 PM
     Author     : ASUS
 --%>
 
@@ -17,11 +17,11 @@
     <body style="background-color: #F8F8F8">
         <div class="input_box">
             <div class="center_boxs">
-                <form action="../CourseController" >
-                    <h2 style="color: darkgreen">INSERT COURSE</h2>
-                    <input type="text" class="insert_box" name="txtCourseName" placeholder="Course name" required="true"/><br/>
-                    <input type="text" class="insert_box" name="txtDescription" placeholder="Description" required="true"/><br/>
-                    <input type="hidden" name="key" value="insertCourse"/>
+                <form action="../UserController" >
+                    <h2 style="color: darkgreen">CREATE USER</h2>
+                    <input type="text" class="insert_box" name="txtUsername" placeholder="User name" required="true"/><br/>
+                    <input type="text" class="insert_box" name="txtRole" placeholder="Role" required="true"/><br/>
+                    <input type="hidden" name="key" value="insertUser"/>
                     <button type="submit" class="btn-info btn_insert">CREATE</button>
                 </form>
             </div>

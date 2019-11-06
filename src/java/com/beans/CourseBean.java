@@ -20,7 +20,15 @@ import java.util.List;
 public class CourseBean implements Serializable {
 
     private int id;
-    private String name;
+    private String name, description;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
     private List<LessonDto> lessons;
     CourseDao dao = new CourseDao();
 
@@ -56,14 +64,14 @@ public class CourseBean implements Serializable {
 
     public boolean insertCourse() throws ClassNotFoundException, SQLException {
         boolean check;
-        CourseDto dto = new CourseDto(name);
+        CourseDto dto = new CourseDto(name,description);
         check = dao.insert(dto);
         return check;
     }
 
     public boolean updateCourse() throws ClassNotFoundException, SQLException {
         boolean check;
-        CourseDto dto = new CourseDto(id, name);
+        CourseDto dto = new CourseDto(id, name,description);
         check = dao.update(dto);
         return check;
     }
@@ -73,4 +81,11 @@ public class CourseBean implements Serializable {
         check = dao.delete(id);
         return check;
     }
+
+    public ArrayList<CourseDto> getUserCourse(int userId) throws ClassNotFoundException, SQLException {
+        ArrayList<CourseDto> listCourse;
+        listCourse = (ArrayList<CourseDto>) dao.getUserCourse(userId);
+        return listCourse;
+    }
+
 }

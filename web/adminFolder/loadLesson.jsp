@@ -16,10 +16,6 @@
         <title>JSP Page</title>
     </head>  
     <script>
-        function submitForm(element) {
-            var row = "row" + element;
-            document.getElementById(row).submit();
-        }
         function myFunction() {
             var input, filter, table, tr, td, i, txtValue;
             input = document.getElementById("myInput");
@@ -89,8 +85,7 @@
                 </thead>
                 <tbody>
                     <c:forEach var="dto" items="${listLesson}" varStatus="counter">
-                    <form action="#" id="row${counter.count}">
-                        <tr onclick="submitForm(${counter.count})">
+                        <tr>
                             <td>${counter.count}</td>
                             <td>${dto.name}</td>
                             <td>${dto.description}
@@ -100,7 +95,6 @@
                             <td><a href="lessonController?key=lessonDetail&id=${dto.id}&name=${dto.name}&description=${dto.description}&link=${dto.videoLink}">
                                     Detail</a></td>
                         </tr>
-                    </form>
                 </c:forEach>
             </tbody>
         </table>

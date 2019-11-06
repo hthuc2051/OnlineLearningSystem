@@ -41,18 +41,47 @@ public class CourseDao implements Serializable {
         List<CourseDto> result = null;
         CourseDto dto = null;
         int id;
-        String name;
+        String name, description;
         try {
             con = MyConnection.getConnection();
             if (con != null) {
                 result = new ArrayList<>();
-                String sql = "Select id,name from tblCourses Where active = 1";
+                String sql = "Select id,name, description from tblCourses Where active = 1";
                 stm = con.prepareStatement(sql);
                 rs = stm.executeQuery();
                 while (rs.next()) {
                     id = rs.getInt("id");
                     name = rs.getString("name");
-                    dto = new CourseDto(id, name);
+                    description = rs.getString("description");
+                    dto = new CourseDto(id, name, description);
+                    result.add(dto);
+                }
+            }
+        } finally {
+            closeConnection();
+        }
+
+        return result;
+    }
+
+    public List<CourseDto> getUserCourse(int userId) throws ClassNotFoundException, SQLException {
+        List<CourseDto> result = null;
+        CourseDto dto = null;
+        int id;
+        String name, description;
+        try {
+            con = MyConnection.getConnection();
+            if (con != null) {
+                result = new ArrayList<>();
+                String sql = "Select c.id,c.name,c.description from tblUsers_Courses u join tblCourses c on c.id = u.course_id Where c.active = 1 and u.user_id = ? ";
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, userId);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    id = rs.getInt("id");
+                    name = rs.getString("name");
+                    description = rs.getString("description");
+                    dto = new CourseDto(id, name, description);
                     result.add(dto);
                 }
             }
@@ -100,10 +129,11 @@ public class CourseDao implements Serializable {
         try {
             con = MyConnection.getConnection();
             if (con != null) {
-                String sql = "Insert into tblCourses(name, active) values(?,?)";
+                String sql = "Insert into tblCourses(name, active,description) values(?,?,?)";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, dto.getName());
                 stm.setBoolean(2, true);
+                stm.setString(3, dto.getDescription());
                 check = stm.executeUpdate() > 0;
             }
         } finally {
@@ -117,10 +147,11 @@ public class CourseDao implements Serializable {
         try {
             con = MyConnection.getConnection();
             if (con != null) {
-                String sql = "Update tblCourses set name = ? where id = ?";
+                String sql = "Update tblCourses set name = ?, description =? where id = ?";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, dto.getName());
-                stm.setInt(2, dto.getId());
+                stm.setString(2, dto.getDescription());
+                stm.setInt(3, dto.getId());
                 check = stm.executeUpdate() > 0;
             }
         } finally {

@@ -22,32 +22,51 @@
             }
         }
     </script>
-    <body>
+    <body style="background-color: #F8F8F8">
         <!--https://www.youtube.com/embed/tgbNymZ7vqY-->
-        <div>
-            <form action="lessonController" >
-                <iframe id="iframe" width="420" height="345" src="">
-                </iframe></br>
-                Lesson: <input type="text" class="" name="txtLessonName" placeholder="enter a lesson name" required="true"/><br/>
-                Description: <input type="text" class="" name="txtLessonDescription" placeholder="enter a lesson name" required="true"/><br/>
-                Course:
-                <select name="txtCourseId">
-                    <c:set var="listCourse" value="${requestScope.LISTCOURSE}"/>
-                    <c:set var="selected" value="${sessionScope.COURSEID}"/>
-                    <c:forEach var="dto" items="${listCourse}">
-                        <c:if test="${dto.id == selected}">
-                            <option value="${dto.id}" selected="">${dto.name}</option>
-                        </c:if>
-                        <c:if test="${dto.id != selected}">
-                            <option value="${dto.id}">${dto.name}</option>
-                        </c:if>
-                    </c:forEach>
+        <div class="input_box">
+            <div class="center_boxs_lesson">
+                <form action="lessonController" >
+                    <iframe id="iframe" class="iframe" src="">
+                    </iframe>
+                    <div class="left_iframe">
+                        <h2 style="color: darkgreen">INSERT LESSON</h2>
+                        <table style="text-align: left">
+                            <tr>
+                                <td style="padding-top: 10px">Lesson:</td>
+                                <td style="width: 80%"><input type="text" class="insert_box_lesson" name="txtLessonName"  required="true"/></td>
+                            </tr>
+                            <tr>
+                                <td style="padding-top: 10px">Description:</td>
+                                <td><input type="text" class="insert_box_lesson" name="txtLessonDescription" required="true"/></td>
+                            </tr>
+                            <tr>
+                                <td style="padding-top: 10px">Course:</td>
+                                <td> <select class="insert_box_lesson" name="txtCourseId">
+                                        <c:set var="listCourse" value="${requestScope.LISTCOURSE}"/>
+                                        <c:set var="selected" value="${sessionScope.COURSEID}"/>
+                                        <c:forEach var="dto" items="${listCourse}">
+                                            <c:if test="${dto.id == selected}">
+                                                <option value="${dto.id}" selected="">${dto.name}</option>
+                                            </c:if>
+                                            <c:if test="${dto.id != selected}">
+                                                <option value="${dto.id}">${dto.name}</option>
+                                            </c:if>
+                                        </c:forEach>
 
-                </select><br/>
-                Video: <input type="text" id="link" class="" onchange="loadVideo()" name="txtLessonLink" placeholder="enter a lesson name" required="true"/><br/>
-                <input type="hidden" name="key" value="insertCourse"/>
-                <button type="submit" class="btn-info btn_insert">Insert</button>
-            </form>
+                                    </select></td>
+                            <tr>
+                                <td style="padding-top: 10px">Video:</td>
+                                <td><input type="text" id="link" class="insert_box_lesson" onchange="loadVideo()" name="txtLessonLink"  required="true"/></td>
+                            </tr>
+                            </tr>
+                        </table>
+                        <input type="hidden" name="key" value="insertCourse"/>
+                        <button type="submit" class="btn-info btn_insert">Insert</button>
+                    </div>
+
+                </form>
+            </div>
         </div>
     </body>
 </html>
