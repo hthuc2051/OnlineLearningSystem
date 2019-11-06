@@ -60,11 +60,12 @@ body {
     
     .btn_insert{
         margin-top: 10px;
-        border-radius: 16px;
+        border-radius: 4px;
     }
     
     .insert_box{
         width: 50%;
         border-radius: 16px;
+        text-align: center
     }
 }

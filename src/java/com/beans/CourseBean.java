@@ -17,10 +17,12 @@ import java.util.List;
  *
  * @author HP
  */
-public class CourseBean implements Serializable{
+public class CourseBean implements Serializable {
+
     private int id;
     private String name;
     private List<LessonDto> lessons;
+    CourseDao dao = new CourseDao();
 
     public int getId() {
         return id;
@@ -45,11 +47,30 @@ public class CourseBean implements Serializable{
     public void setLessons(List<LessonDto> lessons) {
         this.lessons = lessons;
     }
-    
-    public ArrayList<CourseDto> loadAllCourse() throws ClassNotFoundException, SQLException{
+
+    public ArrayList<CourseDto> loadAllCourse() throws ClassNotFoundException, SQLException {
         ArrayList<CourseDto> listCourse;
-        CourseDao dao = new CourseDao();
-           listCourse = (ArrayList<CourseDto>) dao.getAllCourses();
+        listCourse = (ArrayList<CourseDto>) dao.getAllCourses();
         return listCourse;
+    }
+
+    public boolean insertCourse() throws ClassNotFoundException, SQLException {
+        boolean check;
+        CourseDto dto = new CourseDto(name);
+        check = dao.insert(dto);
+        return check;
+    }
+
+    public boolean updateCourse() throws ClassNotFoundException, SQLException {
+        boolean check;
+        CourseDto dto = new CourseDto(id, name);
+        check = dao.update(dto);
+        return check;
+    }
+
+    public boolean deleteCourse() throws ClassNotFoundException, SQLException {
+        boolean check;
+        check = dao.delete(id);
+        return check;
     }
 }

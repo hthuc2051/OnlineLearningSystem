@@ -12,20 +12,22 @@ import java.util.List;
  *
  * @author HP
  */
-public class CourseDto implements Serializable{
+public class CourseDto implements Serializable {
+
     private int id;
     private String name;
     private List<LessonDto> lessons;
     private boolean active;
 
-  
+    public CourseDto(String name) {
+        this.name = name;
+    }
 
     public CourseDto(int id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    
     public CourseDto(int id, String name, List<LessonDto> lessons) {
         this.id = id;
         this.name = name;
@@ -55,13 +57,13 @@ public class CourseDto implements Serializable{
     public void setLessons(List<LessonDto> lessons) {
         this.lessons = lessons;
     }
-    
-      public boolean isActive() {
+
+    public boolean isActive() {
         return active;
     }
 
     public void setActive(boolean active) {
         this.active = active;
     }
-    
+
 }

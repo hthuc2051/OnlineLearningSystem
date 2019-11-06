@@ -63,16 +63,14 @@ public class CourseDao implements Serializable {
         return result;
     }
 
-    
-
-    public boolean delete(String id) throws ClassNotFoundException, SQLException {
+    public boolean delete(int id) throws ClassNotFoundException, SQLException {
         boolean check = false;
         try {
             con = MyConnection.getConnection();
             if (con != null) {
                 String sql = "Update tblCourses Set active = 0 where id = ?";
                 stm = con.prepareStatement(sql);
-                stm.setString(1, id);
+                stm.setInt(1, id);
                 check = stm.executeUpdate() > 0;
             }
         } finally {
@@ -105,12 +103,48 @@ public class CourseDao implements Serializable {
                 String sql = "Insert into tblCourses(name, active) values(?,?)";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, dto.getName());
-                stm.setBoolean(4, true);
+                stm.setBoolean(2, true);
                 check = stm.executeUpdate() > 0;
             }
         } finally {
             closeConnection();
         }
         return check;
+    }
+
+    public boolean update(CourseDto dto) throws ClassNotFoundException, SQLException {
+        boolean check = false;
+        try {
+            con = MyConnection.getConnection();
+            if (con != null) {
+                String sql = "Update tblCourses set name = ? where id = ?";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, dto.getName());
+                stm.setInt(2, dto.getId());
+                check = stm.executeUpdate() > 0;
+            }
+        } finally {
+            closeConnection();
+        }
+        return check;
+    }
+
+    public int getCourseByLessonId(int lessonId) throws ClassNotFoundException, SQLException {
+        int id = 0;
+        try {
+            con = MyConnection.getConnection();
+            if (con != null) {
+                String sql = "Select l.id from tblCourses l join tblCourses_Lesson c on l.id = c.course_id Where l.active = 1 and c.lesson_id = ?";
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, lessonId);
+                rs = stm.executeQuery();
+                if (rs.next()) {
+                    id = rs.getInt("id");
+                }
+            }
+        } finally {
+            closeConnection();
+        }
+        return id;
     }
 }

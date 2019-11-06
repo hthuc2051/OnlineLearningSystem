@@ -39,11 +39,27 @@ public class CourseController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String url = HOME_PAGE;
         try {
+            request.removeAttribute("STATUS");
             String key = request.getParameter("key");
             CourseBean bean = new CourseBean();
             switch (key) {
                 case "loadCourse":
                     request = loadAllCourses(request, bean);
+                    break;
+                case "insertCourse":
+                    request = insertCourse(request, bean);
+                    break;
+                case "courseDetail":
+                    request.setAttribute("courseName", request.getParameter("courseName"));
+                    request.setAttribute("courseId", request.getParameter("courseId"));
+                    url = "adminFolder/courseDetail.jsp";
+                    break;
+                case "updateCourse":
+                    request = updateCourse(request, bean);
+                    break;
+                case "deleteCourse":
+                    request = deleteCourse(request, bean);
+                    break;
             }
 
         } catch (Exception e) {
@@ -61,8 +77,48 @@ public class CourseController extends HttpServlet {
         return request;
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    private HttpServletRequest insertCourse(HttpServletRequest request, CourseBean bean) throws ClassNotFoundException, SQLException {
+        String courseName = request.getParameter("txtCourseName");
+        bean.setName(courseName);
+        boolean check = bean.insertCourse();
+        if (check) {
+            request.setAttribute("STATUS", "Insert successfully!");
+        } else {
+            request.setAttribute("STATUS", "Insert fail!");
+        }
+        request = loadAllCourses(request, bean);
+        return request;
+    }
 
+    private HttpServletRequest updateCourse(HttpServletRequest request, CourseBean bean) throws ClassNotFoundException, SQLException {
+        String courseName = request.getParameter("courseName");
+        String courseId = request.getParameter("courseId");
+        bean.setName(courseName);
+        bean.setId(Integer.parseInt(courseId));
+        boolean check = bean.updateCourse();
+        if (check) {
+            request.setAttribute("STATUS", "Update successfully!");
+        } else {
+            request.setAttribute("STATUS", "Update fail!");
+        }
+        request = loadAllCourses(request, bean);
+        return request;
+    }
+
+    private HttpServletRequest deleteCourse(HttpServletRequest request, CourseBean bean) throws ClassNotFoundException, SQLException {
+        String courseId = request.getParameter("courseId");
+        bean.setId(Integer.parseInt(courseId));
+        boolean check = bean.deleteCourse();
+        if (check) {
+            request.setAttribute("STATUS", "Delete successfully!");
+        } else {
+            request.setAttribute("STATUS", "Delete fail!");
+        }
+        request = loadAllCourses(request, bean);
+        return request;
+    }
+
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

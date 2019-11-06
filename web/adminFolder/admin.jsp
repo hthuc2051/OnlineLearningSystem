@@ -35,7 +35,7 @@
                 <div class="sidebar-heading">NHAT THIEN </div>
                 <div class="list-group list-group-flush">
                     <a href="CourseController?key=loadCourse" class="list-group-item list-group-item-action bg-light">Course</a>
-                    <a href="#" class="list-group-item list-group-item-action bg-light">Lesion</a>
+                    <a href="lessonController?key=loadLessons" class="list-group-item list-group-item-action bg-light">Lesion</a>
                     <a href="#" class="list-group-item list-group-item-action bg-light">User</a>
                 </div>
             </div>

@@ -22,7 +22,7 @@
             var row = "row" + element;
             document.getElementById(row).submit();
         }
-
+        
         function myFunction() {
             var input, filter, table, tr, td, i, txtValue;
             input = document.getElementById("myInput");
@@ -50,12 +50,18 @@
                 }
             }
         }
+        
+        function checkStatus(status) {
+            if (status) {
+                alert(status);
+            }
+        }
     </script>
-    <body>
+    <body onload="checkStatus('${requestScope.STATUS}')">
         <div id="header">
             <div class="row">
                 <div class="col-8">
-                    <form action="adminFolder/courseDetail.jsp">
+                    <form action="adminFolder/insertCourse.jsp">
                         <button type="submit" class="btn-primary active">Add New</button>
                     </form>
                 </div>
@@ -85,7 +91,7 @@
                             <input type="hidden" value="getLessonsById" name="key"/>
                         </td>
                         <td>
-                            <a href="courseDetailController">Detail</a>
+                            <a href="CourseController?key=courseDetail&courseId=${dto.id}&courseName=${dto.name}">Detail</a>
                         </td>
                     </tr>
                 </form>

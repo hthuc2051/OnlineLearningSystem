@@ -6,6 +6,7 @@
 package com.beans;
 
 import com.dtos.LessonDto;
+import com.models.CourseDao;
 import com.models.LessonDao;
 import java.io.Serializable;
 import java.sql.SQLException;
@@ -52,9 +53,48 @@ public class LessonBean implements Serializable {
         this.videoLink = videoLink;
     }
 
-    public ArrayList<LessonDto> loadLessonByCourseId(String courseId) throws ClassNotFoundException, SQLException {
+    public ArrayList<LessonDto> getAllLessons() throws ClassNotFoundException, SQLException {
         LessonDao dao = new LessonDao();
-        ArrayList<LessonDto> listLesson = dao.getLessonByCourseId(courseId);
+        ArrayList<LessonDto> listLesson = dao.getAllLessons();
         return listLesson;
+    }
+
+    public ArrayList<LessonDto> loadLessonByCourseId() throws ClassNotFoundException, SQLException {
+        LessonDao dao = new LessonDao();
+        ArrayList<LessonDto> listLesson = dao.getLessonByCourseId(id);
+        return listLesson;
+    }
+
+    public boolean insertLesson(int courseId) throws ClassNotFoundException, SQLException {
+        LessonDao dao = new LessonDao();
+        LessonDto dto = new LessonDto(id, name, description, videoLink);
+        boolean check = dao.insert(dto);
+        if (check) {
+            int insertedID = dao.getInsertedId();
+            check = dao.insertCourseLesson(courseId, insertedID);
+        }
+        return check;
+    }
+
+    public int getCourseIdByLessonId() throws ClassNotFoundException, SQLException {
+        CourseDao dao = new CourseDao();
+        int courseId = dao.getCourseByLessonId(id);
+        return courseId;
+    }
+
+    public boolean uploadLesson(int newCourseId, int oldCourseId) throws ClassNotFoundException, SQLException {
+        LessonDao dao = new LessonDao();
+        LessonDto dto = new LessonDto(id, name, description, videoLink);
+        boolean check = dao.update(dto);
+        if (check) {
+            check = dao.updateCourseLesson(newCourseId, oldCourseId, id);
+        }
+        return check;
+    }
+    
+     public boolean deleteLesson() throws ClassNotFoundException, SQLException {
+        LessonDao dao = new LessonDao();
+        boolean check = dao.delete(id);
+        return check;
     }
 }
