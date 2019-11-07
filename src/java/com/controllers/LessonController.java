@@ -19,11 +19,12 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author ASUS
  */
-public class lessonController extends HttpServlet {
+public class LessonController extends HttpServlet {
 
     private final String HOME_PAGE = "adminFolder/admin.jsp";
     private final String ERROR_PAGE = "error.jsp";
     private final String PAGE = "loadLesson";
+    private final String LESSON_DETAILS = "students/lessonDetails.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -45,7 +46,12 @@ public class lessonController extends HttpServlet {
                 case "getLessonsById":
                     request = getLessonsById(request, bean);
                     break;
-
+                case "USER_LESSON_DETAILS":
+                    String id = request.getParameter("txtId");
+                    LessonDto dto = bean.getLessonDetails(Integer.parseInt(id));
+                    request.setAttribute("Dto", dto);
+                    url = LESSON_DETAILS;
+                    break;
             }
 
         } catch (Exception e) {

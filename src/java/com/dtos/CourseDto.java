@@ -14,15 +14,14 @@ import java.util.List;
  */
 public class CourseDto implements Serializable{
     private int id;
-    private String name;
+    private String name,description;
     private List<LessonDto> lessons;
     private boolean active;
 
-  
-
-    public CourseDto(int id, String name) {
+    public CourseDto(int id, String name, String description) {
         this.id = id;
         this.name = name;
+        this.description = description;
     }
 
     
@@ -62,6 +61,14 @@ public class CourseDto implements Serializable{
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
     
 }

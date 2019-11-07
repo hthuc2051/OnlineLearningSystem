@@ -38,7 +38,7 @@ public class LessonDao implements Serializable {
         }
     }
 
-    public ArrayList<LessonDto> getLessonByCourseId(String courseId) throws ClassNotFoundException, SQLException {
+    public ArrayList<LessonDto> getLessonByCourseId(int courseId) throws ClassNotFoundException, SQLException {
         ArrayList<LessonDto> result = null;
         LessonDto dto = null;
         int id;
@@ -47,9 +47,9 @@ public class LessonDao implements Serializable {
             con = MyConnection.getConnection();
             if (con != null) {
                 result = new ArrayList<>();
-                String sql = "Select l.id,l.name,l.description,l.video_link from tblLesson l join tblCourses_Lesson c on l.id = c.lesson_id Where l.active = 1 and c.course_id = ?";
+                String sql = "Select l.id,l.name,l.description,l.video_link from tblLessons l join tblCourses_Lessons c on l.id = c.lesson_id Where l.active = 1 and c.course_id = ?";
                 stm = con.prepareStatement(sql);
-                stm.setString(1, courseId);
+                stm.setInt(1, courseId);
                 rs = stm.executeQuery();
                 while (rs.next()) {
                     id = rs.getInt("id");
@@ -65,6 +65,30 @@ public class LessonDao implements Serializable {
         }
 
         return result;
+    }
+
+    public LessonDto findLessonById(int id) throws ClassNotFoundException, SQLException {
+        LessonDto dto = null;
+        String name, description, videoLink;
+        try {
+            con = MyConnection.getConnection();
+            if (con != null) {
+                String sql = "Select id, name,description,video_link From tblLessons Where id=?";
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, id);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    name = rs.getString("name");
+                    description = rs.getString("description");
+                    videoLink = rs.getString("video_link");
+                    dto = new LessonDto(id, name, description, videoLink);
+                }
+            }
+        } finally {
+            closeConnection();
+        }
+
+        return dto;
     }
 
 }

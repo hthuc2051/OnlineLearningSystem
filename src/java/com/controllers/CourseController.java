@@ -10,6 +10,7 @@ import com.dtos.CourseDto;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -24,16 +25,9 @@ public class CourseController extends HttpServlet {
     private final String HOME_PAGE = "adminFolder/admin.jsp";
     private final String ERROR_PAGE = "error.jsp";
     private final String PAGE = "loadCourse";
+    private final String HOME_USER = "students/homepage.jsp";
+    private final String COURSE_DETAILS_USER = "students/courseDetails.jsp";
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -44,6 +38,25 @@ public class CourseController extends HttpServlet {
             switch (key) {
                 case "loadCourse":
                     request = loadAllCourses(request, bean);
+                    break;
+                case "COURSES_USER":
+                    List<CourseDto> listCourses = bean.loadAllCourse();
+                    List<CourseDto> top4Courses = new ArrayList<>();
+                    if (listCourses != null && listCourses.size() > 4) {
+                        for (int i = 0; i < 4; i++) {
+                            top4Courses.add(listCourses.get(i));
+                        }
+                    }
+                    request.setAttribute("ListTop4", top4Courses);
+                    request.setAttribute("ListAllCourses", listCourses);
+                    url = HOME_USER;
+                    break;
+                case "USER_COURSE_DETAILS":
+                    String id = request.getParameter("txtId");
+                    CourseDto dto = bean.getCourseDetails(Integer.parseInt(id));
+                    request.setAttribute("Dto", dto);
+                    url = COURSE_DETAILS_USER;
+                    break;
             }
 
         } catch (Exception e) {
@@ -62,7 +75,6 @@ public class CourseController extends HttpServlet {
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-
     /**
      * Handles the HTTP <code>GET</code> method.
      *

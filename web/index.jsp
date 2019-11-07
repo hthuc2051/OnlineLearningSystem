@@ -14,7 +14,7 @@
     <body>
         <form action="CourseController">
             <input type="submit" value="LOAD"/>
-            <input type="hidden" value="loadCourse" name="key"/>
+            <input type="hidden" value="COURSES_USER" name="key"/>
         </form>
     </body>
 </html>

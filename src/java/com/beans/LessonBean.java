@@ -54,7 +54,13 @@ public class LessonBean implements Serializable {
 
     public ArrayList<LessonDto> loadLessonByCourseId(String courseId) throws ClassNotFoundException, SQLException {
         LessonDao dao = new LessonDao();
-        ArrayList<LessonDto> listLesson = dao.getLessonByCourseId(courseId);
+        ArrayList<LessonDto> listLesson = dao.getLessonByCourseId(Integer.parseInt(courseId));
         return listLesson;
+    }
+
+    public LessonDto getLessonDetails(int lessonId) throws ClassNotFoundException, SQLException {
+        LessonDao dao = new LessonDao();
+        LessonDto dto = dao.findLessonById(lessonId);
+        return dto;
     }
 }
