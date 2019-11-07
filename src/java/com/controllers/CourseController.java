@@ -7,6 +7,7 @@ package com.controllers;
 
 import com.beans.CourseBean;
 import com.dtos.CourseDto;
+import com.models.UserDao;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,13 +16,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author HP
  */
-
-
 public class CourseController extends HttpServlet {
 
     private final String HOME_PAGE = "adminFolder/admin.jsp";
@@ -29,6 +29,7 @@ public class CourseController extends HttpServlet {
     private final String PAGE = "loadCourse";
     private final String HOME_USER = "students/homepage.jsp";
     private final String COURSE_DETAILS_USER = "students/courseDetails.jsp";
+    private final String LOGIN_PAGE = "registration/login.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -47,6 +48,7 @@ public class CourseController extends HttpServlet {
             request.removeAttribute("STATUS");
             String key = request.getParameter("key");
             CourseBean bean = new CourseBean();
+            System.out.println(key);
             switch (key) {
                 case "loadCourse":
                     request = loadAllCourses(request, bean);
@@ -83,14 +85,57 @@ public class CourseController extends HttpServlet {
                     break;
                 case "USER_COURSE_DETAILS":
                     String id = request.getParameter("txtId");
-                    CourseDto dto = bean.getCourseDetails(Integer.parseInt(id));
-                    request.setAttribute("Dto", dto);
-                    url = COURSE_DETAILS_USER;
+                    HttpSession session = request.getSession();
+                    if (session.getAttribute("USERNAME") == null) {
+                        url = LOGIN_PAGE;
+                    } else {
+                        CourseDto dto = bean.getCourseDetails(Integer.parseInt(id));
+                        request.setAttribute("Dto", dto);
+                        url = COURSE_DETAILS_USER;
+                    }
+                    break;
+                case "Sign In":
+                    String username = request.getParameter("txtEmail");
+                    String password = request.getParameter("txtPassword");
+                    UserDao dao = new UserDao();
+                    boolean checkLogin = dao.getUserAuth(username, password);
+                    if (checkLogin) {
+                        session = request.getSession();
+                        session.setAttribute("USERNAME", username);
+                        listCourses = bean.loadAllCourse();
+                        top4Courses = new ArrayList<>();
+                        if (listCourses != null && listCourses.size() > 4) {
+                            for (int i = 0; i < 4; i++) {
+                                top4Courses.add(listCourses.get(i));
+                            }
+                        }
+                        request.setAttribute("ListTop4", top4Courses);
+                        request.setAttribute("ListAllCourses", listCourses);
+                        url = HOME_USER;
+                    } else {
+                        String errorText = "Invalid Username or Password!!!";
+                        request.setAttribute("ERRORTEXT", errorText);
+                        url = LOGIN_PAGE;
+                    }
+                    break;
+                case "LOG_OUT":
+                    session = request.getSession();
+                    session.removeAttribute("USERNAME");
+                    listCourses = bean.loadAllCourse();
+                    top4Courses = new ArrayList<>();
+                    if (listCourses != null && listCourses.size() > 4) {
+                        for (int i = 0; i < 4; i++) {
+                            top4Courses.add(listCourses.get(i));
+                        }
+                    }
+                    request.setAttribute("ListTop4", top4Courses);
+                    request.setAttribute("ListAllCourses", listCourses);
+                    url = HOME_USER;
                     break;
             }
 
         } catch (Exception e) {
-            System.out.println(e.toString());
+            e.printStackTrace();
             url = ERROR_PAGE;
         } finally {
             request.getRequestDispatcher(url).forward(request, response);

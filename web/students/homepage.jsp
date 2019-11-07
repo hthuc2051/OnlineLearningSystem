@@ -4,6 +4,7 @@
     Author     : HP
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="custag" %>
 
@@ -17,14 +18,14 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>Online learing System</title>
+        <title>Online Learning System</title>
         <link href="vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet" type="text/css">
         <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet"
               type="text/css">
 
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
               integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <link href="css/style.css" rel="stylesheet">
+        <link href="css/style.css" rel="stylesheet" type="text/css"/>
 
     </head>
 
@@ -46,12 +47,25 @@
                                 <span class="sr-only">(current)</span>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Sign up</a>
-                        </li>
+                        <custag:if test="${sessionScope.USERNAME == null}">
+                            <li class="nav-item">
+                                <a class="nav-link" href="registration/login.jsp">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="registration/signup.jsp">Sign up</a>
+                            </li>
+                        </custag:if>
+                        <custag:if test="${sessionScope.USERNAME != null}">
+                            <li class="nav-item">
+                                <a class="nav-link text-white">Welcome, ${sessionScope.USERNAME}</a>
+                            </li>
+                            <li class="nav-item">
+                                <custag:url value="CourseController" var="logout">
+                                    <custag:param name="key" value="LOG_OUT" ></custag:param>
+                                </custag:url>
+                                <a class="nav-link" href="${logout}">Log Out</a>
+                            </li>
+                        </custag:if>
                     </ul>
                 </div>
             </div>

@@ -8,7 +8,6 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="custag" %>
 
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html lang="en">
 
     <head>
@@ -39,7 +38,10 @@
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
             <div class="container">
-                <a class="navbar-brand" href="#">Online Learning System</a>
+                <custag:url value="CourseController" var="homeUserPage">
+                    <custag:param name="key" value="COURSES_USER" ></custag:param>
+                </custag:url>
+                <a class="navbar-brand" href="${homeUserPage}">Online Learning System</a>
 
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                         aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">

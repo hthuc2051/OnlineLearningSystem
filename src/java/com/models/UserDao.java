@@ -139,4 +139,23 @@ public class UserDao implements Serializable {
 
         return dto;
     }
+
+    public boolean getUserAuth(String username, String password) throws SQLException, ClassNotFoundException {
+        try {
+            con = MyConnection.getConnection();
+            if (con != null) {
+                String sql = "SELECT id FROM tblUsers WHERE username = ? AND password = ? AND active = 'TRUE'";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, username);
+                stm.setString(2, password);
+                rs = stm.executeQuery();
+                if (rs.next()) {
+                    return true;
+                }
+            }
+        } finally {
+            closeConnection();
+        }
+        return false;
+    }
 }
