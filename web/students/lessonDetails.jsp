@@ -48,9 +48,10 @@
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item ">
-                            <a class="nav-link" href="#">Home
-
-                            </a>
+                           <custag:url value="CourseController" var="homeUserPage">
+                                <custag:param name="key" value="COURSES_USER" ></custag:param>
+                            </custag:url>
+                            <a class="nav-link" href="${homeUserPage}">Home</a>
                         </li>
                         <li class="nav-item active">
                             <a class="nav-link" href="#">
@@ -64,7 +65,6 @@
                     </ul>
                 </div>
             </div>
-            <button type="button" class="btn btn-success">Next lesson</button>
 
         </nav>
         <!-- Page Content -->

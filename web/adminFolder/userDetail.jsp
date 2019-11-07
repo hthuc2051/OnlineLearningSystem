@@ -1,6 +1,6 @@
 <%-- 
-    Document   : courseDetiail
-    Created on : Nov 5, 2019, 2:19:40 PM
+    Document   : userDetial
+    Created on : Nov 6, 2019, 1:00:58 PM
     Author     : ASUS
 --%>
 
@@ -16,8 +16,8 @@
     </head>
     <script>
         function setDelete() {
-            if (confirm("Do you want to delete this course?")) {
-                document.getElementById("key").value = "deleteCourse";
+            if (confirm("Do you want to delete this User?")) {
+                document.getElementById("key").value = "deleteUser";
                 document.getElementById("form").submit();
             } else {
 
@@ -27,12 +27,12 @@
     <body style="background-color: #F8F8F8">
         <div class="input_box">
             <div class="center_boxs_detail">
-                <form action="CourseController" id="form" >
-                    <h2 style="color: darkblue">COURSE DETAIL</h2>
-                    <input type="text" class="insert_box" value="${requestScope.courseName}" name="courseName" placeholder="enter a course name" required="true"/><br/>
-                    <input type="text" class="insert_box" value="${requestScope.courseDescription}" name="txtDescription" placeholder="enter desccription" required="true"/><br/>
-                    <input type="hidden" name="key" value="updateCourse" id="key"/>
-                    <input type="hidden" name="courseId" value="${requestScope.courseId}"/>
+                <form action="UserController" id="form" >
+                     <h2 style="color: darkblue">USER DETAIL</h2>
+                    Name:  <input type="text" class="insert_box" value="${requestScope.name}" name="name" required="true"/><br/>
+                    Role:  <input type="text" class="insert_box" value="${requestScope.role}" name="role" required="true"/><br/>
+                    <input type="hidden" name="key" value="updateUser" id="key"/>
+                    <input type="hidden" name="id" value="${requestScope.id}"/>
                     <button type="submit" class="btn-info btn_insert">Update</button>
                     <button type="button" onclick="setDelete()" class="btn-danger btn_delete">Delete</button>
                 </form>

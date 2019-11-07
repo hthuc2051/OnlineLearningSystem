@@ -15,10 +15,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author HP
- */
 public class CourseDao implements Serializable {
 
     Connection con = null;
@@ -87,14 +83,42 @@ public class CourseDao implements Serializable {
         return dto;
     }
 
-    public boolean delete(String id) throws ClassNotFoundException, SQLException {
+    public List<CourseDto> getUserCourse(int userId) throws ClassNotFoundException, SQLException {
+        List<CourseDto> result = null;
+        CourseDto dto = null;
+        int id;
+        String name, description;
+        try {
+            con = MyConnection.getConnection();
+            if (con != null) {
+                result = new ArrayList<>();
+                String sql = "Select c.id,c.name,c.description from tblUsers_Courses u join tblCourses c on c.id = u.course_id Where c.active = 1 and u.user_id = ? ";
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, userId);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    id = rs.getInt("id");
+                    name = rs.getString("name");
+                    description = rs.getString("description");
+                    dto = new CourseDto(id, name, description);
+                    result.add(dto);
+                }
+            }
+        } finally {
+            closeConnection();
+        }
+
+        return result;
+    }
+
+    public boolean delete(int id) throws ClassNotFoundException, SQLException {
         boolean check = false;
         try {
             con = MyConnection.getConnection();
             if (con != null) {
                 String sql = "Update tblCourses Set active = 0 where id = ?";
                 stm = con.prepareStatement(sql);
-                stm.setString(1, id);
+                stm.setInt(1, id);
                 check = stm.executeUpdate() > 0;
             }
         } finally {
@@ -124,15 +148,53 @@ public class CourseDao implements Serializable {
         try {
             con = MyConnection.getConnection();
             if (con != null) {
-                String sql = "Insert into tblCourses(name, active) values(?,?)";
+                String sql = "Insert into tblCourses(name, active,description) values(?,?,?)";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, dto.getName());
-                stm.setBoolean(4, true);
+                stm.setBoolean(2, true);
+                stm.setString(3, dto.getDescription());
                 check = stm.executeUpdate() > 0;
             }
         } finally {
             closeConnection();
         }
         return check;
+    }
+
+    public boolean update(CourseDto dto) throws ClassNotFoundException, SQLException {
+        boolean check = false;
+        try {
+            con = MyConnection.getConnection();
+            if (con != null) {
+                String sql = "Update tblCourses set name = ?, description =? where id = ?";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, dto.getName());
+                stm.setString(2, dto.getDescription());
+                stm.setInt(3, dto.getId());
+                check = stm.executeUpdate() > 0;
+            }
+        } finally {
+            closeConnection();
+        }
+        return check;
+    }
+
+    public int getCourseByLessonId(int lessonId) throws ClassNotFoundException, SQLException {
+        int id = 0;
+        try {
+            con = MyConnection.getConnection();
+            if (con != null) {
+                String sql = "Select l.id from tblCourses l join tblCourses_Lessons c on l.id = c.course_id Where l.active = 1 and c.lesson_id = ?";
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, lessonId);
+                rs = stm.executeQuery();
+                if (rs.next()) {
+                    id = rs.getInt("id");
+                }
+            }
+        } finally {
+            closeConnection();
+        }
+        return id;
     }
 }

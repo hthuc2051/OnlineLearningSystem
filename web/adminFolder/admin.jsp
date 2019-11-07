@@ -23,20 +23,33 @@
 
         <!-- Custom styles for this template -->
         <link href="admin/css/simple-sidebar.css" rel="stylesheet">
-
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
     </head>
-
+    <script>
+        var flag = true;
+        function changeArrow() {
+            if (flag) {
+                flag = false;
+                $("#menu-toggle").removeClass("fa-chevron-left");
+                $("#menu-toggle").addClass("fa-chevron-right");
+            }
+            else {
+                flag = true;
+                $("#menu-toggle").removeClass("fa-chevron-right");
+                $("#menu-toggle").addClass("fa-chevron-left");
+            }
+        }
+    </script>
     <body>
-
         <div class="d-flex" id="wrapper">
 
             <!-- Sidebar -->
-            <div class="bg-light border-right" id="sidebar-wrapper">
+            <div class="bg-light border-right" id="sidebar-wrapper" >
                 <div class="sidebar-heading">NHAT THIEN </div>
                 <div class="list-group list-group-flush">
                     <a href="CourseController?key=loadCourse" class="list-group-item list-group-item-action bg-light">Course</a>
-                    <a href="#" class="list-group-item list-group-item-action bg-light">Lesion</a>
-                    <a href="#" class="list-group-item list-group-item-action bg-light">User</a>
+                    <a href="lessonController?key=loadLessons" class="list-group-item list-group-item-action bg-light">Lesson</a>
+                    <a href="UserController?key=loadUser" class="list-group-item list-group-item-action bg-light">User</a>
                 </div>
             </div>
             <!-- /#sidebar-wrapper -->
@@ -45,7 +58,7 @@
             <div id="page-content-wrapper">
 
                 <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-                    <button class="btn btn-primary" id="menu-toggle">Toggle Menu</button>
+                    <button class="btn btn-primary fas fa-chevron-left" id="menu-toggle" onclick="changeArrow()"></button>
 
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -54,20 +67,19 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
                             <li class="nav-item active">
-                                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                                <a class="nav-link" href="#"> <span class="sr-only">(current)</span></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Link</a>
+                                <a class="nav-link" href="#"></a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Dropdown
+                                    Profile
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Something else here</a>
+                                    <a class="dropdown-item" href="UserController?key=editProfile">Edit</a>
+                                      <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#">Logout</a>
                                 </div>
                             </li>
                         </ul>
@@ -82,6 +94,9 @@
                         <c:when test="${page == 'loadLesson'}">
                             <%@include file="loadLesson.jsp" %>
                         </c:when>
+                        <c:when test="${page == 'loadUser'}">
+                            <%@include file="loadUser.jsp" %>
+                        </c:when>
                     </c:choose>
                 </div>
                 <!-- /#page-content-wrapper -->
@@ -95,10 +110,10 @@
 
             <!-- Menu Toggle Script -->
             <script>
-                $("#menu-toggle").click(function (e) {
-                    e.preventDefault();
-                    $("#wrapper").toggleClass("toggled");
-                });
+                        $("#menu-toggle").click(function (e) {
+                            e.preventDefault();
+                            $("#wrapper").toggleClass("toggled");
+                        });
             </script>
 
     </body>

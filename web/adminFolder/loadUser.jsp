@@ -22,7 +22,7 @@
             var row = "row" + element;
             document.getElementById(row).submit();
         }
-        
+
         function myFunction() {
             var input, filter, table, tr, td, i, txtValue;
             input = document.getElementById("myInput");
@@ -33,7 +33,7 @@
                 td = tr[i].getElementsByTagName("td");
                 if (td) {
                     flag = false;
-                    for (j = 0; j < 2; j++) {
+                    for (j = 0; j < 3; j++) {
                         if (td[j]) {
                             txtValue = td[j].textContent || td[j].innerText;
                             if (txtValue.toUpperCase().indexOf(filter) > -1) {
@@ -50,7 +50,7 @@
                 }
             }
         }
-        
+
         function checkStatus(status) {
             if (status) {
                 alert(status);
@@ -61,7 +61,7 @@
         <div id="header">
             <div class="row">
                 <div class="col-8">
-                    <form action="adminFolder/insertCourse.jsp">
+                    <form action="adminFolder/insertUser.jsp">
                         <button type="submit" class="btn-primary active">Add New</button>
                     </form>
                 </div>
@@ -70,30 +70,29 @@
                     <i class="fas fa-search"></i>
                 </div>
             </div>
-
         </div>
-        <c:set var="listCourse" value="${requestScope.LISTCOURSE}"/>
+        <c:set var="listCourse" value="${requestScope.LISTUSER}"/>
         <table align="center" class="table table-hover" style="margin-top: 10px" id="myTable">
             <thead>
                 <tr>
                     <th>NO</th>
-                    <th>Course Name</th>
-                    <th>Description</th>
+                    <th>User Name</th>
+                    <th>Role</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 <c:forEach var="dto" items="${listCourse}" varStatus="counter">
-                <form action="lessonController" id="row${counter.count}">
+                <form action="CourseController" id="row${counter.count}">
                     <tr onclick="submitForm(${counter.count})">
                         <td>${counter.count}</td>
                         <td>${dto.name}
                             <input type="hidden" value="${dto.id}" name="txtId"/>
-                            <input type="hidden" value="getLessonsById" name="key"/>
+                            <input type="hidden" value="getUserCourse" name="key"/>
                         </td>
-                        <td>${dto.description}</td>
+                        <td>${dto.role}</td>
                         <td>
-                            <a href="CourseController?key=courseDetail&courseId=${dto.id}&courseName=${dto.name}&courseDescription=${dto.description}">Detail</a>
+                            <a href="UserController?key=userDetail&id=${dto.id}&name=${dto.name}&role=${dto.role}">Detail</a>
                         </td>
                     </tr>
                 </form>

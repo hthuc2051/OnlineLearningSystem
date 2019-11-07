@@ -1,22 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.dtos;
 
 import java.io.Serializable;
 import java.util.List;
 
-/**
- *
- * @author HP
- */
-public class CourseDto implements Serializable{
+public class CourseDto implements Serializable {
+
     private int id;
-    private String name,description;
+    private String name, description;
     private List<LessonDto> lessons;
     private boolean active;
+
+    public CourseDto(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 
     public CourseDto(int id, String name, String description) {
         this.id = id;
@@ -24,7 +22,14 @@ public class CourseDto implements Serializable{
         this.description = description;
     }
 
-    
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public CourseDto(int id, String name, List<LessonDto> lessons) {
         this.id = id;
         this.name = name;
@@ -54,8 +59,8 @@ public class CourseDto implements Serializable{
     public void setLessons(List<LessonDto> lessons) {
         this.lessons = lessons;
     }
-    
-      public boolean isActive() {
+
+    public boolean isActive() {
         return active;
     }
 
@@ -63,12 +68,4 @@ public class CourseDto implements Serializable{
         this.active = active;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-    
 }

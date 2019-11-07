@@ -55,7 +55,10 @@
                             </a>
                         </li>
                         <li class="nav-item active">
-                            <a class="nav-link" href="#">Course : Tìm hiểu về Sơn Tùng MTP
+                            <a class="nav-link" href="#">Course : 
+                                <custag:if test="${requestScope.Dto !=null}">
+                                    ${requestScope.Dto.name}
+                                </custag:if>
                                 <span class="sr-only">(current)</span>
                             </a>
                         </li>
