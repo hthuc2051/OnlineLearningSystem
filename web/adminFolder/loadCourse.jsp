@@ -84,7 +84,7 @@
             </thead>
             <tbody>
                 <c:forEach var="dto" items="${listCourse}" varStatus="counter">
-                <form action="lessonController" id="row${counter.count}">
+                <form action="LessonController" id="row${counter.count}">
                     <tr onclick="submitForm(${counter.count})">
                         <td>${counter.count}</td>
                         <td>${dto.name}

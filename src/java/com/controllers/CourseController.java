@@ -31,6 +31,8 @@ public class CourseController extends HttpServlet {
     private final String COURSE_DETAILS_USER = "students/courseDetails.jsp";
     private final String LOGIN_PAGE = "/registration/login.jsp";
     private final String SIGNUP_PAGE = "/registration/signup.jsp";
+    private final String ADMIN = "ADMIN";
+    private final String USER = "USER";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -50,59 +52,95 @@ public class CourseController extends HttpServlet {
             String key = request.getParameter("key");
             CourseBean bean = new CourseBean();
             System.out.println(key);
-            switch (key) {
-                case "loadCourse":
-                    request = loadAllCourses(request, bean);
-                    break;
-                case "insertCourse":
-                    request = insertCourse(request, bean);
-                    break;
-                case "courseDetail":
-                    request.setAttribute("courseName", request.getParameter("courseName"));
-                    request.setAttribute("courseId", request.getParameter("courseId"));
-                    request.setAttribute("courseDescription", request.getParameter("courseDescription"));
-                    url = "adminFolder/courseDetail.jsp";
-                    break;
-                case "updateCourse":
-                    request = updateCourse(request, bean);
-                    break;
-                case "deleteCourse":
-                    request = deleteCourse(request, bean);
-                    break;
-                case "getUserCourse":
-                    request = getUserCourse(request, bean);
-                    break;
-                case "COURSES_USER":
-                    List<CourseDto> listCourses = bean.loadAllCourse();
-                    List<CourseDto> top4Courses = new ArrayList<>();
-                    if (listCourses != null && listCourses.size() > 4) {
-                        for (int i = 0; i < 4; i++) {
-                            top4Courses.add(listCourses.get(i));
+            if (key == null) {
+                List<CourseDto> listCourses = bean.loadAllCourse();
+                List<CourseDto> top4Courses = new ArrayList<>();
+                if (listCourses != null && listCourses.size() > 4) {
+                    for (int i = 0; i < 4; i++) {
+                        top4Courses.add(listCourses.get(i));
+                    }
+                }
+                request.setAttribute("ListTop4", top4Courses);
+                request.setAttribute("ListAllCourses", listCourses);
+                url = HOME_USER;
+            } else {
+                switch (key) {
+                    case "loadCourse":
+                        request = loadAllCourses(request, bean);
+                        break;
+                    case "insertCourse":
+                        request = insertCourse(request, bean);
+                        break;
+                    case "courseDetail":
+                        request.setAttribute("courseName", request.getParameter("courseName"));
+                        request.setAttribute("courseId", request.getParameter("courseId"));
+                        request.setAttribute("courseDescription", request.getParameter("courseDescription"));
+                        url = "adminFolder/courseDetail.jsp";
+                        break;
+                    case "updateCourse":
+                        request = updateCourse(request, bean);
+                        break;
+                    case "deleteCourse":
+                        request = deleteCourse(request, bean);
+                        break;
+                    case "getUserCourse":
+                        request = getUserCourse(request, bean);
+                        break;
+                    case "COURSES_USER":
+                        List<CourseDto> listCourses = bean.loadAllCourse();
+                        List<CourseDto> top4Courses = new ArrayList<>();
+                        if (listCourses != null && listCourses.size() > 4) {
+                            for (int i = 0; i < 4; i++) {
+                                top4Courses.add(listCourses.get(i));
+                            }
                         }
-                    }
-                    request.setAttribute("ListTop4", top4Courses);
-                    request.setAttribute("ListAllCourses", listCourses);
-                    url = HOME_USER;
-                    break;
-                case "USER_COURSE_DETAILS":
-                    String id = request.getParameter("txtId");
-                    HttpSession session = request.getSession();
-                    if (session.getAttribute("USERNAME") == null) {
-                        url = LOGIN_PAGE;
-                    } else {
-                        CourseDto dto = bean.getCourseDetails(Integer.parseInt(id));
-                        request.setAttribute("Dto", dto);
-                        url = COURSE_DETAILS_USER;
-                    }
-                    break;
-                case "Sign In":
-                    String username = request.getParameter("txtEmail");
-                    String password = request.getParameter("txtPassword");
-                    UserDao dao = new UserDao();
-                    boolean checkLogin = dao.getUserAuth(username, password);
-                    if (checkLogin) {
+                        request.setAttribute("ListTop4", top4Courses);
+                        request.setAttribute("ListAllCourses", listCourses);
+                        url = HOME_USER;
+                        break;
+                    case "USER_COURSE_DETAILS":
+                        String id = request.getParameter("txtId");
+                        HttpSession session = request.getSession();
+                        if (session.getAttribute("USERNAME") == null) {
+                            url = LOGIN_PAGE;
+                        } else {
+                            CourseDto dto = bean.getCourseDetails(Integer.parseInt(id));
+                            request.setAttribute("Dto", dto);
+                            url = COURSE_DETAILS_USER;
+                        }
+                        break;
+                    case "Sign In":
+                        String username = request.getParameter("txtEmail");
+                        String password = request.getParameter("txtPassword");
+                        UserDao dao = new UserDao();
+                        String checkLogin = dao.getUserAuth(username, password);
+                        if (checkLogin.toUpperCase().trim().equals(USER)) {
+                            session = request.getSession();
+                            session.setAttribute("USERNAME", username);
+                            listCourses = bean.loadAllCourse();
+                            top4Courses = new ArrayList<>();
+                            if (listCourses != null && listCourses.size() > 4) {
+                                for (int i = 0; i < 4; i++) {
+                                    top4Courses.add(listCourses.get(i));
+                                }
+                            }
+                            request.setAttribute("ListTop4", top4Courses);
+                            request.setAttribute("ListAllCourses", listCourses);
+                            url = HOME_USER;
+                        } else if (checkLogin.toUpperCase().trim().equals(ADMIN)) {
+                            session = request.getSession();
+                            session.setAttribute("USERNAME", username);
+                            request = loadAllCourses(request, bean);
+                        } else {
+                            String errorText = "Invalid Username or Password!";
+                            request.setAttribute("ERRORTEXT", errorText);
+                            request.setAttribute("USERNAME", username);
+                            url = LOGIN_PAGE;
+                        }
+                        break;
+                    case "LOG_OUT":
                         session = request.getSession();
-                        session.setAttribute("USERNAME", username);
+                        session.removeAttribute("USERNAME");
                         listCourses = bean.loadAllCourse();
                         top4Courses = new ArrayList<>();
                         if (listCourses != null && listCourses.size() > 4) {
@@ -113,58 +151,38 @@ public class CourseController extends HttpServlet {
                         request.setAttribute("ListTop4", top4Courses);
                         request.setAttribute("ListAllCourses", listCourses);
                         url = HOME_USER;
-                    } else {
-                        String errorText = "Invalid Username or Password!";
-                        request.setAttribute("ERRORTEXT", errorText);
-                        request.setAttribute("USERNAME", username);
-                        url = LOGIN_PAGE;
-                    }
-                    break;
-                case "LOG_OUT":
-                    session = request.getSession();
-                    session.removeAttribute("USERNAME");
-                    listCourses = bean.loadAllCourse();
-                    top4Courses = new ArrayList<>();
-                    if (listCourses != null && listCourses.size() > 4) {
-                        for (int i = 0; i < 4; i++) {
-                            top4Courses.add(listCourses.get(i));
-                        }
-                    }
-                    request.setAttribute("ListTop4", top4Courses);
-                    request.setAttribute("ListAllCourses", listCourses);
-                    url = HOME_USER;
-                    break;
-                case "Sign Up":
-                    String signup_username = request.getParameter("email");
-                    String signup_password = request.getParameter("password");
-                    dao = new UserDao();
-                    if (signup_username.trim() != null
-                            && signup_password.trim() != null
-                            && !signup_username.trim().isEmpty()
-                            && !signup_password.trim().isEmpty()) {
-                        if (dao.checkExistedUsername(signup_username)) {
-                            String error = "Email Address is already existed!";
+                        break;
+                    case "Sign Up":
+                        String signup_username = request.getParameter("email");
+                        String signup_password = request.getParameter("password");
+                        dao = new UserDao();
+                        if (signup_username.trim() != null
+                                && signup_password.trim() != null
+                                && !signup_username.trim().isEmpty()
+                                && !signup_password.trim().isEmpty()) {
+                            if (dao.checkExistedUsername(signup_username)) {
+                                String error = "Email Address is already existed!";
+                                request.setAttribute("ERROR", error);
+                                url = SIGNUP_PAGE;
+                            } else {
+                                if (dao.createNewUser(signup_username, signup_password)) {
+                                    request.setAttribute("USERNAME", signup_username);
+                                    url = LOGIN_PAGE;
+                                } else {
+                                    url = ERROR_PAGE;
+                                }
+                            }
+                        } else {
+                            String error = "Password is empty!";
                             request.setAttribute("ERROR", error);
                             url = SIGNUP_PAGE;
-                        } else {
-                            if (dao.createNewUser(signup_username, signup_password)) {
-                                request.setAttribute("USERNAME", signup_username);
-                                url = LOGIN_PAGE;
-                            } else {
-                                url = ERROR_PAGE;
-                            }
                         }
-                    } else {
-                        String error = "Password is empty!";
-                        request.setAttribute("ERROR", error);
-                        url = SIGNUP_PAGE;
-                    }
-                    request.setAttribute("USERNAME", signup_username);
-                    break;
+                        request.setAttribute("USERNAME", signup_username);
+                        break;
+                }
             }
-
         } catch (Exception e) {
-            e.printStackTrace();
+            request.setAttribute("ERROR", e.toString());
             url = ERROR_PAGE;
         } finally {
             request.getRequestDispatcher(url).forward(request, response);

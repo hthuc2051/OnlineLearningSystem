@@ -53,7 +53,7 @@
         <c:set var="listLesson" value="${requestScope.LISTLESSON}"/>
         <c:if test="${empty listLesson}">
             <H1 style="text-align: center; margin-top: 100px; color: darkolivegreen"> There are no lessons</H1>
-            <form action="lessonController" style="text-align: center">
+            <form action="LessonController" style="text-align: center">
                 <input type="hidden" value="insertPage" name="key"/>
                 <button type="submit" class="btn-primary active">Add New</button>
             </form>
@@ -62,7 +62,7 @@
             <div id="header">
                 <div class="row">
                     <div class="col-8">
-                        <form action="lessonController">
+                        <form action="LessonController">
                             <input type="hidden" value="insertPage" name="key"/>
                             <button type="submit" class="btn-primary active">Add New</button>
                         </form>
@@ -92,7 +92,7 @@
                                 <input type="hidden" value="${dto.id}" name="txtId"/>
                             </td>
                             <td>${dto.videoLink}</td>
-                            <td><a href="lessonController?key=lessonDetail&id=${dto.id}&name=${dto.name}&description=${dto.description}&link=${dto.videoLink}">
+                            <td><a href="LessonController?key=lessonDetail&id=${dto.id}&name=${dto.name}&description=${dto.description}&link=${dto.videoLink}">
                                     Detail</a></td>
                         </tr>
                 </c:forEach>
