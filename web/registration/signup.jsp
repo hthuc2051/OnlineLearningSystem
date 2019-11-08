@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -22,22 +23,26 @@
     </head>
     <body>
         <div class="signup-form">
-            <form action="" method="post">
+            <form action="${pageContext.request.contextPath}/CourseController" method="post" oninput='confirm_password.setCustomValidity(confirm_password.value != password.value ? "Passwords do not match." : "")'>
                 <h2>Create an Account</h2>
                 <div class="form-group">
-                    <input type="email" class="form-control input-lg" name="email" placeholder="Email Address" required="required">
+                    <input type="email" class="form-control input-lg" name="email" placeholder="Email Address" value="${requestScope.USERNAME}" required="required">
                 </div>
                 <div class="form-group">
-                    <input type="password" class="form-control input-lg" name="password" placeholder="Password" required="required">
+                    <input type="password" class="form-control input-lg" id="password" name="password" placeholder="Password" required="required">
                 </div>
-                <div class="form-group">
-                    <input type="password" class="form-control input-lg" name="confirm_password" placeholder="Confirm Password" required="required">
-                </div>  
-                <div class="form-group">
-                    <button type="submit" class="btn btn-success btn-lg btn-block signup-btn">Sign Up</button>
+                <div class="form-group"> 
+                    <input type="password" class="form-control input-lg" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required="required">
                 </div>
-                <div class="text-center text-white">Already have an account? <a href="login.jsp">Login here</a></div>
+                <c:if test="${requestScope.ERROR != null}">
+                    <h5 class="text-danger mb-2">${requestScope.ERROR}</h5>
+                </c:if>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success btn-lg btn-block signup-btn" id="submit" name="key" value="Sign Up">Sign Up</button>
+                </div>
+                <div class="text-center text-white">Already have an account? <a href="${pageContext.request.contextPath}/registration/login.jsp">Login here</a></div>
             </form>
         </div>
+
     </body>
 </html>                            

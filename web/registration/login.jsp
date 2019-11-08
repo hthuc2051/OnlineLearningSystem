@@ -31,7 +31,7 @@
                                     <h3 class="login-heading mb-4">Welcome to Online Learning System!</h3>
                                     <form action="${pageContext.request.contextPath}/CourseController" method="POST">
                                         <div class="form-label-group">
-                                            <input type="email" id="inputEmail" class="form-control" placeholder="Email address" name="txtEmail" required autofocus/>
+                                            <input type="email" id="inputEmail" class="form-control" placeholder="Email address" name="txtEmail" value="${requestScope.USERNAME}" required autofocus/>
                                             <label for="inputEmail">Email address</label>
                                         </div>
 
@@ -44,7 +44,7 @@
                                         </c:if>
                                         <button class="btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2" type="submit" name="key" value="Sign In">Sign In</button>
                                         <div class="text-center">
-                                            <a class="small" href="signup.jsp">Sign Up Here</a></div>
+                                            <a class="small" href="${pageContext.request.contextPath}/registration/signup.jsp">Sign Up Here</a></div>
                                     </form>
                                 </div>
                             </div>

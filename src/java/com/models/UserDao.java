@@ -158,4 +158,42 @@ public class UserDao implements Serializable {
         }
         return false;
     }
+
+    public boolean checkExistedUsername(String username) throws SQLException, ClassNotFoundException {
+        try {
+            con = MyConnection.getConnection();
+            if (con != null) {
+                String sql = "SELECT id FROM tblUsers WHERE username = ? ";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, username);
+                rs = stm.executeQuery();
+                if (rs.next()) {
+                    // if username is existed then not allow to create new account
+                    return true;
+                }
+            }
+        } finally {
+            closeConnection();
+        }
+        return false;
+    }
+
+    public boolean createNewUser(String username, String password) throws SQLException, ClassNotFoundException {
+        boolean check = false;
+        try {
+            con = MyConnection.getConnection();
+            if (con != null) {
+                String sql = "INSERT INTO tblUsers (username, password, role, active) VALUES(?,?,?,?)";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, username);
+                stm.setString(2, password);
+                stm.setString(3, "user");
+                stm.setString(4, "True");
+                check =  stm.executeUpdate() > 0;
+            }
+        } finally {
+            closeConnection();
+        }
+        return check;
+    }
 }

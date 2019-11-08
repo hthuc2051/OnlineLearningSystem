@@ -29,7 +29,8 @@ public class CourseController extends HttpServlet {
     private final String PAGE = "loadCourse";
     private final String HOME_USER = "students/homepage.jsp";
     private final String COURSE_DETAILS_USER = "students/courseDetails.jsp";
-    private final String LOGIN_PAGE = "registration/login.jsp";
+    private final String LOGIN_PAGE = "/registration/login.jsp";
+    private final String SIGNUP_PAGE = "/registration/signup.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -113,8 +114,9 @@ public class CourseController extends HttpServlet {
                         request.setAttribute("ListAllCourses", listCourses);
                         url = HOME_USER;
                     } else {
-                        String errorText = "Invalid Username or Password!!!";
+                        String errorText = "Invalid Username or Password!";
                         request.setAttribute("ERRORTEXT", errorText);
+                        request.setAttribute("USERNAME", username);
                         url = LOGIN_PAGE;
                     }
                     break;
@@ -131,6 +133,33 @@ public class CourseController extends HttpServlet {
                     request.setAttribute("ListTop4", top4Courses);
                     request.setAttribute("ListAllCourses", listCourses);
                     url = HOME_USER;
+                    break;
+                case "Sign Up":
+                    String signup_username = request.getParameter("email");
+                    String signup_password = request.getParameter("password");
+                    dao = new UserDao();
+                    if (signup_username.trim() != null
+                            && signup_password.trim() != null
+                            && !signup_username.trim().isEmpty()
+                            && !signup_password.trim().isEmpty()) {
+                        if (dao.checkExistedUsername(signup_username)) {
+                            String error = "Email Address is already existed!";
+                            request.setAttribute("ERROR", error);
+                            url = SIGNUP_PAGE;
+                        } else {
+                            if (dao.createNewUser(signup_username, signup_password)) {
+                                request.setAttribute("USERNAME", signup_username);
+                                url = LOGIN_PAGE;
+                            } else {
+                                url = ERROR_PAGE;
+                            }
+                        }
+                    } else {
+                        String error = "Password is empty!";
+                        request.setAttribute("ERROR", error);
+                        url = SIGNUP_PAGE;
+                    }
+                    request.setAttribute("USERNAME", signup_username);
                     break;
             }
 
