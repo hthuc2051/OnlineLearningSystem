@@ -117,16 +117,24 @@ public class CourseController extends HttpServlet {
                         if (checkLogin.toUpperCase().trim().equals(USER)) {
                             session = request.getSession();
                             session.setAttribute("USERNAME", username);
-                            listCourses = bean.loadAllCourse();
-                            top4Courses = new ArrayList<>();
-                            if (listCourses != null && listCourses.size() > 4) {
-                                for (int i = 0; i < 4; i++) {
-                                    top4Courses.add(listCourses.get(i));
+                            String user_id = dao.findUserByUsername(username);
+
+                            if (user_id == null && user_id.isEmpty()) {
+                                request.setAttribute("ERROR", "There are something wrong about your request, please try again later!");
+                                url = ERROR_PAGE;
+                            } else {
+                                // load unenroll course by username
+                                listCourses = bean.getUnEnrollCoursesByUsername(user_id);
+                                top4Courses = new ArrayList<>();
+                                if (listCourses != null && listCourses.size() > 4) {
+                                    for (int i = 0; i < 4; i++) {
+                                        top4Courses.add(listCourses.get(i));
+                                    }
                                 }
+                                request.setAttribute("ListTop4", top4Courses);
+                                request.setAttribute("ListAllCourses", listCourses);
+                                url = HOME_USER;
                             }
-                            request.setAttribute("ListTop4", top4Courses);
-                            request.setAttribute("ListAllCourses", listCourses);
-                            url = HOME_USER;
                         } else if (checkLogin.toUpperCase().trim().equals(ADMIN)) {
                             session = request.getSession();
                             session.setAttribute("USERNAME", username);

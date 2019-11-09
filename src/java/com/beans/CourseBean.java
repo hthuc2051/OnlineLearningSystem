@@ -102,5 +102,11 @@ public class CourseBean implements Serializable {
         }
         return dto;
     }
+    
+    public ArrayList<CourseDto> getUnEnrollCoursesByUsername(String username) throws ClassNotFoundException, SQLException {
+        ArrayList<CourseDto> listCourse;
+        listCourse = (ArrayList<CourseDto>) dao.getUnEnrollCoursesByUsername(username);
+        return listCourse;
+    }
 
 }

@@ -108,7 +108,7 @@
                                             <custag:param name="key" value="USER_COURSE_DETAILS" ></custag:param>
                                             <custag:param name="txtId" value="${dto.id}" ></custag:param>
                                         </custag:url>
-                                        <a href="${viewDetailsLink}" class="btn btn-primary">Study Now!</a>
+                                        <a href="${viewDetailsLink}" class="btn btn-primary">Enroll Now!</a>
                                     </div>
                                 </div>
                             </div>
@@ -158,7 +158,7 @@
                                             <custag:param name="key" value="USER_COURSE_DETAILS" ></custag:param>
                                             <custag:param name="txtId" value="${dto.id}" ></custag:param>
                                         </custag:url>
-                                        <a href="${viewDetailsLink}" class="btn btn-primary">Study Now!</a>
+                                        <a href="${viewDetailsLink}" class="btn btn-primary">Enroll Now!</a>
                                     </div>
                                 </div>
                             </div>

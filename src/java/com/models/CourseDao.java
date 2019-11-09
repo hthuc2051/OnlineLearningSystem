@@ -197,4 +197,35 @@ public class CourseDao implements Serializable {
         }
         return id;
     }
+
+    public List<CourseDto> getUnEnrollCoursesByUsername(String username) throws ClassNotFoundException, SQLException {
+        List<CourseDto> result = null;
+        CourseDto dto = null;
+        int id;
+        String name, description;
+        try {
+            con = MyConnection.getConnection();
+            if (con != null) {
+                result = new ArrayList<>();
+                String sql = "SELECT C.id, C.name, C.description FROM tblCourses C "
+                        + "EXCEPT "
+                        + "SELECT C.id, C.name, C.description "
+                        + "FROM tblUsers_Courses UC INNER JOIN tblCourses C ON UC.course_id=C.id "
+                        + "WHERE UC.user_id = ?";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, username);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    id = rs.getInt("id");
+                    name = rs.getString("name");
+                    description = rs.getString("description");
+                    dto = new CourseDto(id, name, description);
+                    result.add(dto);
+                }
+            }
+        } finally {
+            closeConnection();
+        }
+        return result;
+    }
 }
