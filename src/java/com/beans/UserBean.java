@@ -66,19 +66,25 @@ public class UserBean implements Serializable {
         boolean check = dao.insertUser(dto);
         return check;
     }
-    
-     public boolean updateUser() throws ClassNotFoundException, SQLException {
+
+    public boolean updateUser() throws ClassNotFoundException, SQLException {
         UserDto dto = new UserDto(id, name, role);
         boolean check = dao.updateUser(dto);
         return check;
     }
-     
-      public boolean deleteUser() throws ClassNotFoundException, SQLException {
+
+    public boolean deleteUser() throws ClassNotFoundException, SQLException {
         boolean check = dao.deleteUser(id);
         return check;
     }
-      public UserDto getUserById() throws ClassNotFoundException, SQLException{
-          UserDto dto = dao.getUserById(id);
-          return dto;
-      }
+
+    public UserDto getUserByEmail() throws ClassNotFoundException, SQLException {
+        UserDto dto = dao.getUserById(name);
+        return dto;
+    }
+
+    public boolean isUserExisted() throws SQLException, ClassNotFoundException {
+        boolean check = dao.checkExistedUsername(name);
+        return check;
+    }
 }

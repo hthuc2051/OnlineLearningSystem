@@ -11,8 +11,13 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     </head>
-    <body>
-        <form action="CourseController">
+    <script>
+        function submitForm(){
+            document.getElementById("form").submit();
+        }
+    </script>
+    <body onload="submitForm()">
+        <form action="CourseController" id="form">
             <input type="submit" value="LOAD"/>
             <input type="hidden" value="COURSES_USER" name="key"/>
         </form>

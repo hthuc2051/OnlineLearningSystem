@@ -29,12 +29,14 @@
             <div class="center_boxs_detail">
                 <form action="UserController" id="form" >
                      <h2 style="color: darkblue">USER DETAIL</h2>
-                    Name:  <input type="text" class="insert_box" value="${requestScope.name}" name="name" required="true"/><br/>
+                     Name:  <input type="text" class="insert_box" value="${requestScope.name}" name="name" required="true" readonly="true"/><br/>
                     Role:  <input type="text" class="insert_box" value="${requestScope.role}" name="role" required="true"/><br/>
                     <input type="hidden" name="key" value="updateUser" id="key"/>
+                    <input type="hidden" name="PAGE_BEGIN" value="detail" id="key"/>
                     <input type="hidden" name="id" value="${requestScope.id}"/>
                     <button type="submit" class="btn-info btn_insert">Update</button>
                     <button type="button" onclick="setDelete()" class="btn-danger btn_delete">Delete</button>
+                     <h4 style="color: red">${requestScope.DUPLICATED}</h4>
                 </form>
             </div>
         </div>

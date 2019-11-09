@@ -14,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -55,7 +56,7 @@ public class UserController extends HttpServlet {
                     url = "adminFolder/userDetail.jsp";
                     break;
                 case "updateUser":
-                    request = updateUser(request, bean);
+                    request = updateUser(request, response, bean);
                     break;
                 case "deleteUser":
                     request = deleteUser(request, bean);
@@ -66,7 +67,7 @@ public class UserController extends HttpServlet {
                     break;
             }
         } catch (Exception e) {
-            System.out.println(e.toString());
+             request.setAttribute("ERROR", e.toString());
             url = ERROR_PAGE;
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
@@ -95,15 +96,46 @@ public class UserController extends HttpServlet {
         return request;
     }
 
-    private HttpServletRequest updateUser(HttpServletRequest request, UserBean bean) throws ClassNotFoundException, SQLException {
+    private HttpServletRequest updateUser(HttpServletRequest request, HttpServletResponse response, UserBean bean) throws ClassNotFoundException, SQLException, ServletException, IOException {
         String name = request.getParameter("name");
         String id = request.getParameter("id");
         String role = request.getParameter("role");
         bean.setName(name);
+//        HttpSession session = request.getSession();
+//        String email = (String) session.getAttribute("USERNAME");
+//        if(!email.equals(name)){
+//            
+//        }
+//        boolean check = bean.isUserExisted();
+//        if (check) {
+//            String page_begin = request.getParameter("PAGE_BEGIN");
+//            String url = "adminFolder/userDetail.jsp";
+//            if (page_begin.equals("detail")) {
+//                request.setAttribute("name", request.getParameter("name"));
+//                request.setAttribute("id", request.getParameter("id"));
+//                request.setAttribute("role", request.getParameter("role"));
+//            } else {
+//                request.setAttribute("key", "editProfile");
+//                request = getUserById(request, bean);
+//                url = "adminFolder/userProfile.jsp";
+//            }
+//            request.setAttribute("DUPLICATED", "This USERNAME IS ALREADY EXISTED");
+//            request.getRequestDispatcher(url).forward(request, response);
+//        } else {
+//            bean.setId(Integer.parseInt(id));
+//            bean.setRole(role);
+//            boolean checkUpdate = bean.updateUser();
+//            if (checkUpdate) {
+//                request.setAttribute("STATUS", "Update successfully!");
+//            } else {
+//                request.setAttribute("STATUS", "Update fail!");
+//            }
+//            request = loadAllUser(request, bean);
+//        }
         bean.setId(Integer.parseInt(id));
         bean.setRole(role);
-        boolean check = bean.updateUser();
-        if (check) {
+        boolean checkUpdate = bean.updateUser();
+        if (checkUpdate) {
             request.setAttribute("STATUS", "Update successfully!");
         } else {
             request.setAttribute("STATUS", "Update fail!");
@@ -126,9 +158,10 @@ public class UserController extends HttpServlet {
     }
 
     private HttpServletRequest getUserById(HttpServletRequest request, UserBean bean) throws ClassNotFoundException, SQLException {
-        String id = "1";
-        bean.setId(Integer.parseInt(id));
-        UserDto dto = bean.getUserById();
+        HttpSession session = request.getSession();
+        String email = (String) session.getAttribute("USERNAME");
+        bean.setName(email);
+        UserDto dto = bean.getUserByEmail();
         request.setAttribute("name", dto.getName());
         request.setAttribute("id", dto.getId());
         request.setAttribute("role", dto.getRole());

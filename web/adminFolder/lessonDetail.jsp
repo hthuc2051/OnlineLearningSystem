@@ -17,14 +17,19 @@
     <script>
         function loadVideo() {
             var link = document.getElementById("link").value;
+            var index = link.indexOf("v=");
+            var newIndex = index + 2;
+            var temp = link.substring(newIndex);
+            var newLink = "https://www.youtube.com/embed/" + temp;
             if (link) {
-                document.getElementById("iframe").src = link;
+                document.getElementById("iframe").src = newLink;
             }
         }
 
         function showVideo(link) {
+            var newLink = "https://www.youtube.com/embed/" + link;
             if (link) {
-                document.getElementById("iframe").src = link;
+                document.getElementById("iframe").src = newLink;
             }
         }
 
@@ -41,13 +46,17 @@
         <!--https://www.youtube.com/embed/tgbNymZ7vqY-->
         <div class="input_box">
             <div class="center_boxs_lesson">
-                <form action="lessonController" >
+                <form action="LessonController" >
                     <c:set var="lesson" value="${requestScope.LESSON}"/>
                     <iframe id="iframe" class="iframe" src="">
                     </iframe>
                     <div class="left_iframe">
                         <h2 style="color: darkblue">LESSON DETAIL</h2>
                         <table style="text-align: left">
+                            <tr>
+                                <td style="padding-top: 10px">Video:</td>
+                                <td><input type="text" id="link" class="insert_box_lesson" value="https://www.youtube.com/watch?v=${lesson.videoLink}" onchange="loadVideo()" name="txtLessonLink"  required="true"/></td>
+                            </tr>
                             <tr>
                                 <td style="padding-top: 10px">Lesson:</td>
                                 <td style="width: 80%"><input type="text" value="${lesson.name}" class="insert_box_lesson" name="txtLessonName"  required="true"/></td>
@@ -69,19 +78,13 @@
                                                 <option value="${dto.id}">${dto.name}</option>
                                             </c:if>
                                         </c:forEach>
-
                                     </select></td>
-                            <tr>
-                                <td style="padding-top: 10px">Video:</td>
-                                <td><input type="text" id="link" class="insert_box_lesson" value="${lesson.videoLink}" onchange="loadVideo()" name="txtLessonLink"  required="true"/></td>
-                            </tr>
+
                             </tr>
                         </table>
-                        <input type="hidden" name="key" value="insertCourse"/>
                         <button type="submit" class="btn-info btn_insert">Update</button>
                         <button type="submit" onclick="setDelete()" class="btn-danger btn_delete">Delete</button> 
                     </div>
-
                     <input type="hidden" name="key" value="updateLesson" id="key"/>
                     <input type="hidden" name="lessonId" value="${lesson.id}"/>
 

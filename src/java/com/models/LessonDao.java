@@ -1,4 +1,3 @@
-
 package com.models;
 
 import com.dtos.LessonDto;
@@ -8,7 +7,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 
 import java.util.ArrayList;
 
@@ -62,7 +60,8 @@ public class LessonDao implements Serializable {
 
         return result;
     }
-     public LessonDto findLessonById(int id) throws ClassNotFoundException, SQLException {
+
+    public LessonDto findLessonById(int id) throws ClassNotFoundException, SQLException {
         LessonDto dto = null;
         String name, description, videoLink;
         try {
@@ -116,6 +115,12 @@ public class LessonDao implements Serializable {
 
     public boolean insert(LessonDto dto) throws ClassNotFoundException, SQLException {
         boolean check = false;
+        String originalLink = dto.getVideoLink();
+        String newLink = "";
+        if (originalLink != null && !originalLink.equals("")) {
+            int index = originalLink.indexOf("v=");
+            newLink = originalLink.substring(index += 2);
+        }
         try {
             con = MyConnection.getConnection();
             if (con != null) {
@@ -123,7 +128,7 @@ public class LessonDao implements Serializable {
                 stm = con.prepareStatement(sql);
                 stm.setString(1, dto.getName());
                 stm.setString(2, dto.getDescription());
-                stm.setString(3, dto.getVideoLink());
+                stm.setString(3, newLink);
                 stm.setBoolean(4, true);
                 check = stm.executeUpdate() > 0;
             }
@@ -170,6 +175,12 @@ public class LessonDao implements Serializable {
 
     public boolean update(LessonDto dto) throws ClassNotFoundException, SQLException {
         boolean check = false;
+        String originalLink = dto.getVideoLink();
+        String newLink = "";
+        if (originalLink != null && !originalLink.equals("")) {
+            int index = originalLink.indexOf("v=");
+            newLink = originalLink.substring(index += 2);
+        }
         try {
             con = MyConnection.getConnection();
             if (con != null) {
@@ -177,7 +188,7 @@ public class LessonDao implements Serializable {
                 stm = con.prepareStatement(sql);
                 stm.setString(1, dto.getName());
                 stm.setString(2, dto.getDescription());
-                stm.setString(3, dto.getVideoLink());
+                stm.setString(3, newLink);
                 stm.setBoolean(4, true);
                 stm.setInt(5, dto.getId());
                 check = stm.executeUpdate() > 0;

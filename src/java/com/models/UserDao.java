@@ -117,20 +117,22 @@ public class UserDao implements Serializable {
         return check;
     }
 
-    public UserDto getUserById(int id) throws ClassNotFoundException, SQLException {
+    public UserDto getUserById(String email) throws ClassNotFoundException, SQLException {
         UserDto dto = null;
         String name, role;
+        int userId;
         try {
             con = MyConnection.getConnection();
             if (con != null) {
-                String sql = "Select username,role from tblUsers Where active = 1 and id = ?";
+                String sql = "Select id,username,role from tblUsers Where active = 1 and username = ?";
                 stm = con.prepareStatement(sql);
-                stm.setInt(1, id);
+                stm.setString(1, email);
                 rs = stm.executeQuery();
                 if (rs.next()) {
+                    userId = rs.getInt("id");
                     name = rs.getString("username");
                     role = rs.getString("role");
-                    dto = new UserDto(id, name, role);
+                    dto = new UserDto(userId, name, role);
                 }
             }
         } finally {
@@ -140,23 +142,24 @@ public class UserDao implements Serializable {
         return dto;
     }
 
-    public boolean getUserAuth(String username, String password) throws SQLException, ClassNotFoundException {
+    public String getUserAuth(String username, String password) throws SQLException, ClassNotFoundException {
+        String role = "failed";
         try {
             con = MyConnection.getConnection();
             if (con != null) {
-                String sql = "SELECT id FROM tblUsers WHERE username = ? AND password = ? AND active = 'TRUE'";
+                String sql = "SELECT id,role FROM tblUsers WHERE username = ? AND password = ? AND active = 'TRUE'";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, username);
                 stm.setString(2, password);
                 rs = stm.executeQuery();
                 if (rs.next()) {
-                    return true;
+                    role = rs.getString("role");
                 }
             }
         } finally {
             closeConnection();
         }
-        return false;
+        return role;
     }
 
     public boolean checkExistedUsername(String username) throws SQLException, ClassNotFoundException {
@@ -189,7 +192,7 @@ public class UserDao implements Serializable {
                 stm.setString(2, password);
                 stm.setString(3, "user");
                 stm.setString(4, "True");
-                check =  stm.executeUpdate() > 0;
+                check = stm.executeUpdate() > 0;
             }
         } finally {
             closeConnection();

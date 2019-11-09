@@ -17,8 +17,12 @@
     <script>
         function loadVideo() {
             var link = document.getElementById("link").value;
+            var index = link.indexOf("v=");
+            var newIndex = index + 2;
+            var temp = link.substring(newIndex);
+            var newLink = "https://www.youtube.com/embed/" + temp;
             if (link) {
-                document.getElementById("iframe").src = link;
+                document.getElementById("iframe").src = newLink;
             }
         }
     </script>
@@ -26,12 +30,16 @@
         <!--https://www.youtube.com/embed/tgbNymZ7vqY-->
         <div class="input_box">
             <div class="center_boxs_lesson">
-                <form action="lessonController" >
+                <form action="LessonController" >
                     <iframe id="iframe" class="iframe" src="">
                     </iframe>
                     <div class="left_iframe">
                         <h2 style="color: darkgreen">INSERT LESSON</h2>
                         <table style="text-align: left">
+                            <tr>
+                                <td style="padding-top: 10px">Video:</td>
+                                <td><input type="text" id="link" class="insert_box_lesson" onchange="loadVideo()" name="txtLessonLink"  required="true"/></td>
+                            </tr>
                             <tr>
                                 <td style="padding-top: 10px">Lesson:</td>
                                 <td style="width: 80%"><input type="text" class="insert_box_lesson" name="txtLessonName"  required="true"/></td>
@@ -55,10 +63,6 @@
                                         </c:forEach>
 
                                     </select></td>
-                            <tr>
-                                <td style="padding-top: 10px">Video:</td>
-                                <td><input type="text" id="link" class="insert_box_lesson" onchange="loadVideo()" name="txtLessonLink"  required="true"/></td>
-                            </tr>
                             </tr>
                         </table>
                         <input type="hidden" name="key" value="insertCourse"/>

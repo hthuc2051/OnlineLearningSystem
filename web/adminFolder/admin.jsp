@@ -45,10 +45,10 @@
 
             <!-- Sidebar -->
             <div class="bg-light border-right" id="sidebar-wrapper" >
-                <div class="sidebar-heading">NHAT THIEN </div>
+                <div class="sidebar-heading">${sessionScope.USERNAME} </div>
                 <div class="list-group list-group-flush">
                     <a href="CourseController?key=loadCourse" class="list-group-item list-group-item-action bg-light">Course</a>
-                    <a href="lessonController?key=loadLessons" class="list-group-item list-group-item-action bg-light">Lesson</a>
+                    <a href="LessonController?key=loadLessons" class="list-group-item list-group-item-action bg-light">Lesson</a>
                     <a href="UserController?key=loadUser" class="list-group-item list-group-item-action bg-light">User</a>
                 </div>
             </div>
@@ -79,7 +79,7 @@
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="UserController?key=editProfile">Edit</a>
                                       <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Logout</a>
+                                    <a class="dropdown-item" href="CourseController?key=LOG_OUT">Logout</a>
                                 </div>
                             </li>
                         </ul>
