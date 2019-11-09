@@ -60,6 +60,38 @@ public class CourseDao implements Serializable {
         return result;
     }
 
+    public List<CourseDto> loadUserCourses(String username) throws ClassNotFoundException, SQLException {
+        List<CourseDto> result = null;
+        CourseDto dto = null;
+        int id;
+        String name, description;
+        try {
+            con = MyConnection.getConnection();
+            if (con != null) {
+                result = new ArrayList<>();
+                String sql = "Select C.id, C.name, C.description "
+                        + "From tblUsers U, tblUsers_Courses UC , tblCourses C "
+                        + "Where U.id = UC.user_id AND UC.course_id = C.id "
+                        + "AND C.active = 1 "
+                        + "AND U.username =?";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, username);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    id = rs.getInt("id");
+                    name = rs.getString("name");
+                    description = rs.getString("description");
+                    dto = new CourseDto(id, name, description);
+                    result.add(dto);
+                }
+            }
+        } finally {
+            closeConnection();
+        }
+
+        return result;
+    }
+
     public CourseDto findCourseById(int id) throws ClassNotFoundException, SQLException {
         CourseDto dto = null;
         String name, description;
@@ -153,6 +185,23 @@ public class CourseDao implements Serializable {
                 stm.setString(1, dto.getName());
                 stm.setBoolean(2, true);
                 stm.setString(3, dto.getDescription());
+                check = stm.executeUpdate() > 0;
+            }
+        } finally {
+            closeConnection();
+        }
+        return check;
+    }
+
+    public boolean enroll(Integer courseId, Integer userId) throws ClassNotFoundException, SQLException {
+        boolean check = false;
+        try {
+            con = MyConnection.getConnection();
+            if (con != null) {
+                String sql = "Insert into tblUsers_Courses(user_id,course_id) values(?,?)";
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, userId);
+                stm.setInt(2, courseId);
                 check = stm.executeUpdate() > 0;
             }
         } finally {

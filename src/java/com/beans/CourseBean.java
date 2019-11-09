@@ -66,10 +66,22 @@ public class CourseBean implements Serializable {
         return listCourse;
     }
 
+    public ArrayList<CourseDto> loadUserCourses(String username) throws ClassNotFoundException, SQLException {
+        ArrayList<CourseDto> listCourse;
+        listCourse = (ArrayList<CourseDto>) dao.loadUserCourses(username);
+        return listCourse;
+    }
+
     public boolean insertCourse() throws ClassNotFoundException, SQLException {
         boolean check;
         CourseDto dto = new CourseDto(name, description);
         check = dao.insert(dto);
+        return check;
+    }
+
+    public boolean enrollCourse(Integer courseId, Integer userId) throws ClassNotFoundException, SQLException {
+        boolean check;
+        check = dao.enroll(courseId, userId);
         return check;
     }
 
@@ -102,7 +114,7 @@ public class CourseBean implements Serializable {
         }
         return dto;
     }
-    
+
     public ArrayList<CourseDto> getUnEnrollCoursesByUsername(String username) throws ClassNotFoundException, SQLException {
         ArrayList<CourseDto> listCourse;
         listCourse = (ArrayList<CourseDto>) dao.getUnEnrollCoursesByUsername(username);

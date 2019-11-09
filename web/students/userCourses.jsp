@@ -43,8 +43,10 @@
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item active">
-                            <a class="nav-link" href="#">Home
-                                <span class="sr-only">(current)</span>
+                             <custag:url value="CourseController" var="homeUserPage">
+                                <custag:param name="key" value="COURSES_USER" ></custag:param>
+                            </custag:url>
+                            <a class="nav-link" href="${homeUserPage}">Home
                             </a>
                         </li>
                         <custag:if test="${sessionScope.USERNAME == null}">
@@ -60,12 +62,6 @@
                                 <a class="nav-link text-white">Welcome, ${sessionScope.USERNAME}</a>
                             </li>
                             <li class="nav-item">
-                                <custag:url value="CourseController" var="viewYourCourses">
-                                    <custag:param name="key" value="VIEW_YOUR_COURSES" ></custag:param>
-                                </custag:url>
-                                <a class="nav-link" href="${viewYourCourses}">Your courses</a>
-                            </li>
-                            <li class="nav-item">
                                 <custag:url value="CourseController" var="logout">
                                     <custag:param name="key" value="LOG_OUT" ></custag:param>
                                 </custag:url>
@@ -76,62 +72,6 @@
                 </div>
             </div>
         </nav>
-
-        <!-- Header - set the background image for the header in the line below -->
-        <header class="py-5 bg-image-full" style="background-image: url('https://wallpaperaccess.com/full/1426870.png');">
-            <img class="logo mt-2 d-block mx-auto" src="img/logo.png" alt="">
-            <p class="logo-title">Online Learning System</p>
-            <!-- Icon Divider -->
-            <div class="divider-custom divider-light">
-                <div class="divider-custom-line"></div>
-                <div class="divider-custom-icon">
-                    <i class="icon-star"></i>
-                </div>
-                <div class="divider-custom-line"></div>
-            </div>
-        </header>
-
-        <!-- Content section -->
-        <section class="py-5">
-            <div class="container">
-                <h1>Hi, Welcome to our Learning system !</h1>
-                <p class="lead">We are the educational framework of the future. Let's checkout our 4 latest courses</p>
-            </div>
-            <!-- Page Features -->
-            <div class="row text-center m-5">
-                <custag:if test="${requestScope.ListTop4 !=null}">
-                    <custag:if test="${not empty requestScope.ListTop4}">
-                        <custag:forEach items="${requestScope.ListTop4}" var="dto" varStatus="counter">
-                            <div class="col-lg-3 col-md-6 mb-4">
-                                <div class="card h-100">
-
-                                    <div class="card-body">
-                                        <h4 class="card-title">${dto.name}</h4>
-                                        <p class="card-text">${dto.description}</p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <custag:url value="CourseController" var="enrollLink">
-                                            <custag:param name="key" value="ENROLL_NOW" ></custag:param>
-                                            <custag:param name="txtId" value="${dto.id}" ></custag:param>
-                                        </custag:url>
-                                        <a href="${enrollLink}" class="btn btn-primary">Enroll Now!</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </custag:forEach>
-                    </custag:if>
-                </custag:if>
-
-            </div>
-            <!-- /.row -->
-        </section>
-
-        <!-- Image Section - set the background image for the header in the line below -->
-        <section class="py-5 bg-image-full" style="background-image: url('img/beach.jpg');">
-            <img class="logo mt-2 d-block mx-auto" src="img/smart-icon.jpg" alt="">
-            <p class="text-center quote">" Research is creating new knowledge "</p>
-            <p class="text-center quote">Neil Armstrong</p>
-        </section>
         <!-- Content section -->
         <section class="py-5">
             <div class="container">
@@ -142,7 +82,7 @@
                     </div>
                     <div class="divider-custom-line"></div>
                 </div>
-                <h3 class="text-center">ALL COURSES</h3>
+                <h3 class="text-center">YOUR ENROLLED COURSES</h3>
 
 
             </div>
@@ -160,11 +100,11 @@
                                         <p class="card-text">${dto.description}</p>
                                     </div>
                                     <div class="card-footer">
-                                        <custag:url value="CourseController" var="enrollLink">
-                                            <custag:param name="key" value="ENROLL_NOW" ></custag:param>
+                                        <custag:url value="CourseController" var="viewDetailsLink">
+                                            <custag:param name="key" value="USER_COURSE_DETAILS" ></custag:param>
                                             <custag:param name="txtId" value="${dto.id}" ></custag:param>
                                         </custag:url>
-                                        <a href="${enrollLink}" class="btn btn-primary">Enroll Now!</a>
+                                        <a href="${viewDetailsLink}" class="btn btn-primary">Study now!</a>
                                     </div>
                                 </div>
                             </div>
@@ -175,40 +115,7 @@
             <!-- /.row -->
         </section>
 
-        <section class="features-icons bg-light text-center">
-            <hr />
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-4">
-                        <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
-                            <div class="features-icons-icon d-flex">
-                                <i class="icon-notebook m-auto text-primary"></i>
-                            </div>
-                            <h3>Easy to take note, remember lesson</h3>
-                            <p class="lead mb-0">Contains easy-to-remember knowledge, take note will become easier !</p>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
-                            <div class="features-icons-icon d-flex">
-                                <i class="icon-location-pin m-auto text-primary"></i>
-                            </div>
-                            <h3>With Internet, Learn everywhere</h3>
-                            <p class="lead mb-0">Learn everywhere you like, convenient for busy people !</p>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="features-icons-item mx-auto mb-0 mb-lg-3">
-                            <div class="features-icons-icon d-flex">
-                                <i class="icon-check m-auto text-primary"></i>
-                            </div>
-                            <h3>Easy To Learn, Easy to understand</h3>
-                            <p class="lead mb-0">Our system supports users to gain best experience !</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        
         <!-- Footer -->
         <footer class="py-4 bg-dark">
             <div class="container">

@@ -28,6 +28,7 @@ public class CourseController extends HttpServlet {
     private final String ERROR_PAGE = "error.jsp";
     private final String PAGE = "loadCourse";
     private final String HOME_USER = "students/homepage.jsp";
+    private final String USER_COURSES = "students/userCourses.jsp";
     private final String COURSE_DETAILS_USER = "students/courseDetails.jsp";
     private final String LOGIN_PAGE = "/registration/login.jsp";
     private final String SIGNUP_PAGE = "/registration/signup.jsp";
@@ -51,7 +52,6 @@ public class CourseController extends HttpServlet {
             request.removeAttribute("STATUS");
             String key = request.getParameter("key");
             CourseBean bean = new CourseBean();
-            System.out.println(key);
             if (key == null) {
                 List<CourseDto> listCourses = bean.loadAllCourse();
                 List<CourseDto> top4Courses = new ArrayList<>();
@@ -87,20 +87,47 @@ public class CourseController extends HttpServlet {
                         request = getUserCourse(request, bean);
                         break;
                     case "COURSES_USER":
-                        List<CourseDto> listCourses = bean.loadAllCourse();
-                        List<CourseDto> top4Courses = new ArrayList<>();
-                        if (listCourses != null && listCourses.size() > 4) {
-                            for (int i = 0; i < 4; i++) {
-                                top4Courses.add(listCourses.get(i));
+                        HttpSession session = request.getSession();
+                        if (session.getAttribute("USERNAME") == null) {
+                            List<CourseDto> listCourses = bean.loadAllCourse();
+                            List<CourseDto> top4Courses = new ArrayList<>();
+                            if (listCourses != null && listCourses.size() > 4) {
+                                for (int i = 0; i < 4; i++) {
+                                    top4Courses.add(listCourses.get(i));
+                                }
                             }
+                            request.setAttribute("ListTop4", top4Courses);
+                            request.setAttribute("ListAllCourses", listCourses);
+                        } else {
+                            String userId = (String) session.getAttribute("USER_ID");
+                            session.setAttribute("USER_ID", userId);
+                            List<CourseDto> listCourses = bean.getUnEnrollCoursesByUsername(userId);
+                            List<CourseDto> top4Courses = new ArrayList<>();
+                            if (listCourses != null && listCourses.size() > 4) {
+                                for (int i = 0; i < 4; i++) {
+                                    top4Courses.add(listCourses.get(i));
+                                }
+                            }
+                            request.setAttribute("ListTop4", top4Courses);
+                            request.setAttribute("ListAllCourses", listCourses);
                         }
-                        request.setAttribute("ListTop4", top4Courses);
-                        request.setAttribute("ListAllCourses", listCourses);
                         url = HOME_USER;
+                        break;
+                    case "VIEW_YOUR_COURSES":
+                        HttpSession sessionViewCourse = request.getSession();
+                        if (sessionViewCourse.getAttribute("USERNAME") == null) {
+                            url = LOGIN_PAGE;
+                        } else {
+                            String username = (String) sessionViewCourse.getAttribute("USERNAME");
+                            List<CourseDto> listUserCourses = bean.loadUserCourses(username);
+                            request.setAttribute("ListAllCourses", listUserCourses);
+                            url = USER_COURSES;
+                        }
+
                         break;
                     case "USER_COURSE_DETAILS":
                         String id = request.getParameter("txtId");
-                        HttpSession session = request.getSession();
+                        session = request.getSession();
                         if (session.getAttribute("USERNAME") == null) {
                             url = LOGIN_PAGE;
                         } else {
@@ -123,9 +150,10 @@ public class CourseController extends HttpServlet {
                                 request.setAttribute("ERROR", "There are something wrong about your request, please try again later!");
                                 url = ERROR_PAGE;
                             } else {
+                                session.setAttribute("USER_ID", user_id);
                                 // load unenroll course by username
-                                listCourses = bean.getUnEnrollCoursesByUsername(user_id);
-                                top4Courses = new ArrayList<>();
+                                List<CourseDto> listCourses = bean.getUnEnrollCoursesByUsername(user_id);
+                                List<CourseDto> top4Courses = new ArrayList<>();
                                 if (listCourses != null && listCourses.size() > 4) {
                                     for (int i = 0; i < 4; i++) {
                                         top4Courses.add(listCourses.get(i));
@@ -149,8 +177,8 @@ public class CourseController extends HttpServlet {
                     case "LOG_OUT":
                         session = request.getSession();
                         session.removeAttribute("USERNAME");
-                        listCourses = bean.loadAllCourse();
-                        top4Courses = new ArrayList<>();
+                        List<CourseDto> listCourses = bean.loadAllCourse();
+                        List<CourseDto> top4Courses = new ArrayList<>();
                         if (listCourses != null && listCourses.size() > 4) {
                             for (int i = 0; i < 4; i++) {
                                 top4Courses.add(listCourses.get(i));
@@ -186,6 +214,34 @@ public class CourseController extends HttpServlet {
                             url = SIGNUP_PAGE;
                         }
                         request.setAttribute("USERNAME", signup_username);
+                        break;
+                    case "ENROLL_NOW":
+                        String courseId = request.getParameter("txtId");
+                        session = request.getSession();
+                        if (session.getAttribute("USERNAME") == null) {
+                            url = LOGIN_PAGE;
+                        } else {
+                            String userId = (String) session.getAttribute("USER_ID");
+                            System.out.println("UserId" + userId);
+                            boolean check = bean.enrollCourse(Integer.parseInt(courseId), Integer.parseInt(userId));
+                            if (check) {
+                                session.setAttribute("USER_ID", userId);
+                                // load unenroll course by username
+                                listCourses = bean.getUnEnrollCoursesByUsername(userId);
+                                top4Courses = new ArrayList<>();
+                                if (listCourses != null && listCourses.size() > 4) {
+                                    for (int i = 0; i < 4; i++) {
+                                        top4Courses.add(listCourses.get(i));
+                                    }
+                                }
+                                request.setAttribute("ListTop4", top4Courses);
+                                request.setAttribute("ListAllCourses", listCourses);
+                                url = HOME_USER;
+                            } else {
+                                url = ERROR_PAGE;
+                            }
+                        }
+
                         break;
                 }
             }
