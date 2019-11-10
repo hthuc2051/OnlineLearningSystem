@@ -91,7 +91,7 @@
                             <td>${dto.description}
                                 <input type="hidden" value="${dto.id}" name="txtId"/>
                             </td>
-                            <td>${dto.videoLink}</td>
+                            <td>https://www.youtube.com/watch?v=${dto.videoLink}</td>
                             <td><a href="LessonController?key=lessonDetail&id=${dto.id}&name=${dto.name}&description=${dto.description}&link=${dto.videoLink}">
                                     Detail</a></td>
                         </tr>
