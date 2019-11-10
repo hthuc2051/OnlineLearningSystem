@@ -222,7 +222,6 @@ public class CourseController extends HttpServlet {
                             url = LOGIN_PAGE;
                         } else {
                             String userId = (String) session.getAttribute("USER_ID");
-                            System.out.println("UserId" + userId);
                             boolean check = bean.enrollCourse(Integer.parseInt(courseId), Integer.parseInt(userId));
                             if (check) {
                                 session.setAttribute("USER_ID", userId);

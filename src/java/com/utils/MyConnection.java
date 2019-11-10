@@ -19,7 +19,7 @@ public class MyConnection implements Serializable{
         Connection con =null;
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         String url ="jdbc:sqlserver://localhost:1433;databaseName=dbLearningOnlineSystem";
-        con = DriverManager.getConnection(url,"sa","123456789");
+        con = DriverManager.getConnection(url,"sa","12");
         return con;
     }
 }
