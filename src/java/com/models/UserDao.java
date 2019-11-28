@@ -41,19 +41,21 @@ public class UserDao implements Serializable {
         List<UserDto> result = null;
         UserDto dto = null;
         int id;
-        String name, role;
+        String name, role, fullname, birthdate;
         try {
             con = MyConnection.getConnection();
             if (con != null) {
                 result = new ArrayList<>();
-                String sql = "Select id,username,role from tblUsers Where active = 1";
+                String sql = "Select id,username,role,fullname,birthdate from tblUsers Where active = 1";
                 stm = con.prepareStatement(sql);
                 rs = stm.executeQuery();
                 while (rs.next()) {
                     id = rs.getInt("id");
                     name = rs.getString("username");
                     role = rs.getString("role");
-                    dto = new UserDto(id, name, role);
+                    fullname = rs.getString("fullname");
+                    birthdate = rs.getString("birthdate");
+                    dto = new UserDto(id, name, role, fullname, birthdate);
                     result.add(dto);
                 }
             }

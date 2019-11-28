@@ -77,6 +77,8 @@
                 <tr>
                     <th>NO</th>
                     <th>User Name</th>
+                    <th>Full Name</th>
+                    <th>Date of Birth</th>
                     <th>Role</th>
                     <th>Action</th>
                 </tr>
@@ -90,6 +92,8 @@
                             <input type="hidden" value="${dto.id}" name="txtId"/>
                             <input type="hidden" value="getUserCourse" name="key"/>
                         </td>
+                        <td>${dto.fullname}</td>
+                        <td>${dto.birthdate}</td>
                         <td>${dto.role}</td>
                         <td>
                             <a href="UserController?key=userDetail&id=${dto.id}&name=${dto.name}&role=${dto.role}">Detail</a>

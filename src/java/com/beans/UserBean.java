@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class UserBean implements Serializable {
 
     private int id;
-    private String name, password, role;
+    private String name, password, role, fullname, birthdate;
     UserDao dao = new UserDao();
 
     public UserBean() {
@@ -54,6 +54,22 @@ public class UserBean implements Serializable {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }
+
+    public String getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(String birthdate) {
+        this.birthdate = birthdate;
     }
 
     public ArrayList<UserDto> getAllUser() throws ClassNotFoundException, SQLException {
