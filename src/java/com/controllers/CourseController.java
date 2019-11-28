@@ -75,6 +75,7 @@ public class CourseController extends HttpServlet {
                         request.setAttribute("courseName", request.getParameter("courseName"));
                         request.setAttribute("courseId", request.getParameter("courseId"));
                         request.setAttribute("courseDescription", request.getParameter("courseDescription"));
+                        request.setAttribute("price", request.getParameter("price"));
                         url = "adminFolder/courseDetail.jsp";
                         break;
                     case "updateCourse":
@@ -280,9 +281,11 @@ public class CourseController extends HttpServlet {
         String courseName = request.getParameter("courseName");
         String courseId = request.getParameter("courseId");
         String description = request.getParameter("txtDescription");
+        String price = request.getParameter("txtPrice");
         bean.setName(courseName);
         bean.setDescription(description);
         bean.setId(Integer.parseInt(courseId));
+        bean.setPrice(price);
         boolean check = bean.updateCourse();
         if (check) {
             request.setAttribute("STATUS", "Update successfully!");

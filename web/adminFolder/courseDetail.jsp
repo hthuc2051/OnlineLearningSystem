@@ -26,11 +26,12 @@
     </script>
     <body style="background-color: #F8F8F8">
         <div class="input_box">
-            <div class="center_boxs_detail">
+            <div class="center_boxs_detail" style="padding-top: 0;">
                 <form action="CourseController" id="form" >
-                    <h2 style="color: darkblue">COURSE DETAIL</h2>
+                    <h2 style="color: darkblue" class="mt-3">COURSE DETAIL</h2>
                     <input type="text" class="insert_box" value="${requestScope.courseName}" name="courseName" placeholder="enter a course name" required="true"/><br/>
                     <input type="text" class="insert_box" value="${requestScope.courseDescription}" name="txtDescription" placeholder="enter desccription" required="true"/><br/>
+                    <input type="text" class="insert_box" value="${requestScope.price}" name="txtPrice" placeholder="enter price" required="true"/><br/>
                     <input type="hidden" name="key" value="updateCourse" id="key"/>
                     <input type="hidden" name="courseId" value="${requestScope.courseId}"/>
                     <button type="submit" class="btn-info btn_insert">Update</button>

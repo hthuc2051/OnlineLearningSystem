@@ -217,11 +217,12 @@ public class CourseDao implements Serializable {
         try {
             con = MyConnection.getConnection();
             if (con != null) {
-                String sql = "Update tblCourses set name = ?, description =? where id = ?";
+                String sql = "Update tblCourses set name = ?, description = ?, price = ? where id = ?";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, dto.getName());
                 stm.setString(2, dto.getDescription());
-                stm.setInt(3, dto.getId());
+                stm.setString(3, dto.getPrice());
+                stm.setInt(4, dto.getId());
                 check = stm.executeUpdate() > 0;
             }
         } finally {

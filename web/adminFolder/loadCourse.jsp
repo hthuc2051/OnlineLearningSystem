@@ -95,7 +95,7 @@
                         <td>${dto.description}</td>
                         <td>${dto.price}$</td>
                         <td>
-                            <a href="CourseController?key=courseDetail&courseId=${dto.id}&courseName=${dto.name}&courseDescription=${dto.description}">Detail</a>
+                            <a href="CourseController?key=courseDetail&courseId=${dto.id}&courseName=${dto.name}&courseDescription=${dto.description}&price=${dto.price}">Detail</a>
                         </td>
                     </tr>
                 </form>

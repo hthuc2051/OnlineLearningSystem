@@ -96,7 +96,7 @@ public class CourseBean implements Serializable {
 
     public boolean updateCourse() throws ClassNotFoundException, SQLException {
         boolean check;
-        CourseDto dto = new CourseDto(id, name, description);
+        CourseDto dto = new CourseDto(id, name, description, price);
         check = dao.update(dto);
         return check;
     }
