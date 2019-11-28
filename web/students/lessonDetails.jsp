@@ -55,6 +55,12 @@
                             </custag:url>
                             <a class="nav-link" href="${homeUserPage}">Home</a>
                         </li>
+                        <li class="nav-item">
+                            <custag:url value="CourseController" var="viewYourCourses">
+                                <custag:param name="key" value="VIEW_YOUR_COURSES" ></custag:param>
+                            </custag:url>
+                            <a class="nav-link" href="${viewYourCourses}">Your courses</a>
+                        </li>
                         <li class="nav-item active">
                             <a class="nav-link" href="#">
                                 <custag:if test="${requestScope.Dto !=null}">
@@ -63,7 +69,12 @@
                                 <span class="sr-only">(current)</span>
                             </a>
                         </li>
-
+                        <li class="nav-item">
+                            <custag:url value="CourseController" var="logout">
+                                <custag:param name="key" value="LOG_OUT" ></custag:param>
+                            </custag:url>
+                            <a class="nav-link" href="${logout}">Log Out</a>
+                        </li>
                     </ul>
                 </div>
             </div>

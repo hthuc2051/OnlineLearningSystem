@@ -45,7 +45,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item active">
+                        <li class="nav-item">
                             <custag:url value="CourseController" var="homeUserPage">
                                 <custag:param name="key" value="COURSES_USER" ></custag:param>
                             </custag:url>
@@ -61,6 +61,9 @@
                             </li>
                         </custag:if>
                         <custag:if test="${sessionScope.USERNAME != null}">
+                            <li class="nav-item active">
+                                <a class="nav-link" href="#">Your courses</a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link text-white">Welcome, ${sessionScope.USERNAME}</a>
                             </li>
@@ -78,6 +81,8 @@
         <!-- Content section -->
         <section class="py-5">
             <div class="container">
+                <h3 class="text-center mt-5">YOUR ENROLLED COURSES</h3>
+
                 <div class="divider-custom text-center">
                     <div class="divider-custom-line"></div>
                     <div class="divider-custom-icon">
@@ -85,9 +90,6 @@
                     </div>
                     <div class="divider-custom-line"></div>
                 </div>
-                <h3 class="text-center">YOUR ENROLLED COURSES</h3>
-
-
             </div>
             <!-- Page Features -->
             <div class="row text-center m-5">

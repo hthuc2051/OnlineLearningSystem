@@ -57,14 +57,14 @@
                         </custag:if>
                         <custag:if test="${sessionScope.USERNAME != null}">
                             <li class="nav-item">
-                                <a class="nav-link text-white">Welcome, ${sessionScope.USERNAME}</a>
-                            </li>
-                            <li class="nav-item">
                                 <custag:url value="CourseController" var="viewYourCourses">
                                     <custag:param name="key" value="VIEW_YOUR_COURSES" ></custag:param>
                                 </custag:url>
                                 <a class="nav-link" href="${viewYourCourses}">Your courses</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white">Welcome, ${sessionScope.USERNAME}</a>
+                            </li>                            
                             <li class="nav-item">
                                 <custag:url value="CourseController" var="logout">
                                     <custag:param name="key" value="LOG_OUT" ></custag:param>
@@ -95,7 +95,7 @@
         <section class="py-5">
             <div class="container">
                 <h1>Hi, Welcome to our Learning system !</h1>
-                <p class="lead">We are the educational framework of the future. Let's checkout our 4 latest courses</p>
+                <p class="lead">We are the educational framework of the future. Let's checkout our latest courses</p>
             </div>
             <!-- Page Features -->
             <div class="row text-center m-5">
