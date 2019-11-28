@@ -37,19 +37,20 @@ public class CourseDao implements Serializable {
         List<CourseDto> result = null;
         CourseDto dto = null;
         int id;
-        String name, description;
+        String name, description, price;
         try {
             con = MyConnection.getConnection();
             if (con != null) {
                 result = new ArrayList<>();
-                String sql = "Select id,name,description from tblCourses Where active = 1";
+                String sql = "Select id,name,description,price from tblCourses Where active = 1";
                 stm = con.prepareStatement(sql);
                 rs = stm.executeQuery();
                 while (rs.next()) {
                     id = rs.getInt("id");
                     name = rs.getString("name");
                     description = rs.getString("description");
-                    dto = new CourseDto(id, name, description);
+                    price = rs.getString("price");
+                    dto = new CourseDto(id, name, description, price);
                     result.add(dto);
                 }
             }
@@ -180,11 +181,12 @@ public class CourseDao implements Serializable {
         try {
             con = MyConnection.getConnection();
             if (con != null) {
-                String sql = "Insert into tblCourses(name, active,description) values(?,?,?)";
+                String sql = "Insert into tblCourses(name, active, description, price) values(?,?,?,?)";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, dto.getName());
                 stm.setBoolean(2, true);
                 stm.setString(3, dto.getDescription());
+                stm.setString(4, dto.getPrice());
                 check = stm.executeUpdate() > 0;
             }
         } finally {

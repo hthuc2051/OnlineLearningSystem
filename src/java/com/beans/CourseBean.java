@@ -22,6 +22,7 @@ public class CourseBean implements Serializable {
 
     private int id;
     private String name, description;
+    private String price;
 
     public CourseBean() {
     }
@@ -60,6 +61,14 @@ public class CourseBean implements Serializable {
         this.lessons = lessons;
     }
 
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
     public ArrayList<CourseDto> loadAllCourse() throws ClassNotFoundException, SQLException {
         ArrayList<CourseDto> listCourse;
         listCourse = (ArrayList<CourseDto>) dao.getAllCourses();
@@ -74,7 +83,7 @@ public class CourseBean implements Serializable {
 
     public boolean insertCourse() throws ClassNotFoundException, SQLException {
         boolean check;
-        CourseDto dto = new CourseDto(name, description);
+        CourseDto dto = new CourseDto(name, description, price);
         check = dao.insert(dto);
         return check;
     }

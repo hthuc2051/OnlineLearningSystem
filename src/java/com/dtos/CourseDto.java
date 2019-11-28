@@ -1,4 +1,3 @@
-
 package com.dtos;
 
 import java.io.Serializable;
@@ -7,15 +6,23 @@ import java.util.List;
 public class CourseDto implements Serializable {
 
     private int id;
-    private String name, description;
+    private String name, description, price;
     private List<LessonDto> lessons;
     private boolean active;
 
-    public CourseDto(String name, String description) {
+    public CourseDto(String name, String description, String price) {
         this.name = name;
         this.description = description;
+        this.price = price;
     }
 
+    public CourseDto(int id, String name, String description, String price) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+    }
+    
     public CourseDto(int id, String name, String description) {
         this.id = id;
         this.name = name;
@@ -66,6 +73,14 @@ public class CourseDto implements Serializable {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
     }
 
 }

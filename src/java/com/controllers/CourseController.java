@@ -262,8 +262,10 @@ public class CourseController extends HttpServlet {
     private HttpServletRequest insertCourse(HttpServletRequest request, CourseBean bean) throws ClassNotFoundException, SQLException {
         String courseName = request.getParameter("txtCourseName");
         String description = request.getParameter("txtDescription");
+        String price = request.getParameter("txtPrice");
         bean.setName(courseName);
         bean.setDescription(description);
+        bean.setPrice(price);
         boolean check = bean.insertCourse();
         if (check) {
             request.setAttribute("STATUS", "Insert successfully!");

@@ -16,11 +16,12 @@
     </head>
     <body style="background-color: #F8F8F8">
         <div class="input_box">
-            <div class="center_boxs">
+            <div class="center_boxs" style="padding-top: 0;">
                 <form action="../CourseController" >
-                    <h2 style="color: darkgreen">INSERT COURSE</h2>
+                    <h2 style="color: darkgreen" class="mt-3">INSERT COURSE</h2>
                     <input type="text" class="insert_box" name="txtCourseName" placeholder="Course name" required="true"/><br/>
                     <input type="text" class="insert_box" name="txtDescription" placeholder="Description" required="true"/><br/>
+                    <input type="text" class="insert_box" name="txtPrice" placeholder="Price" required="true"/><br/>
                     <input type="hidden" name="key" value="insertCourse"/>
                     <button type="submit" class="btn-info btn_insert">CREATE</button>
                 </form>

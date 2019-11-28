@@ -79,6 +79,7 @@
                     <th>NO</th>
                     <th>Course Name</th>
                     <th>Description</th>
+                    <th>Price</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -92,6 +93,7 @@
                             <input type="hidden" value="getLessonsById" name="key"/>
                         </td>
                         <td>${dto.description}</td>
+                        <td>${dto.price}$</td>
                         <td>
                             <a href="CourseController?key=courseDetail&courseId=${dto.id}&courseName=${dto.name}&courseDescription=${dto.description}">Detail</a>
                         </td>
