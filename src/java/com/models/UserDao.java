@@ -223,4 +223,34 @@ public class UserDao implements Serializable {
         }
         return null;
     }
+
+    public boolean updateProfile(UserDto dto) throws ClassNotFoundException, SQLException {
+        boolean check = false;
+        try {
+            con = MyConnection.getConnection();
+            if (con != null) {
+                String sql;
+                if (dto.getPassword() != null && !dto.getPassword().isEmpty()) {
+                    sql = "update tblUsers set fullname = ?, password = ?, image = ?, birthdate = ? where id = ?";
+                    stm = con.prepareStatement(sql);
+                    stm.setString(1, dto.getFullname());
+                    stm.setString(2, dto.getPassword());
+                    stm.setString(3, dto.getImage());
+                    stm.setString(4, dto.getBirthdate());
+                    stm.setInt(5, dto.getId());
+                } else {
+                    sql = "update tblUsers set fullname = ?, image = ?, birthdate = ? where id = ?";
+                    stm = con.prepareStatement(sql);
+                    stm.setString(1, dto.getFullname());
+                    stm.setString(2, dto.getImage());
+                    stm.setString(3, dto.getBirthdate());
+                    stm.setInt(4, dto.getId());
+                }
+                check = stm.executeUpdate() > 0;
+            }
+        } finally {
+            closeConnection();
+        }
+        return check;
+    }
 }

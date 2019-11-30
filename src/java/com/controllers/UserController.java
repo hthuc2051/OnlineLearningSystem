@@ -8,6 +8,7 @@ package com.controllers;
 import com.beans.UserBean;
 import com.dtos.UserDto;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
@@ -84,8 +85,41 @@ public class UserController extends HttpServlet {
                         url = ERROR_PAGE;
                     }
                     break;
+                case "UPDATE_PROFILE":
+                    String id = request.getParameter("txtId");
+                    String fullname,
+                     password,
+                     birthdate,
+                     image;
+                    password = request.getParameter("txtPassword");
+                    fullname = request.getParameter("txtFullName");
+                    byte[] bytes = fullname.getBytes(StandardCharsets.ISO_8859_1);
+                    fullname = new String(bytes, StandardCharsets.UTF_8);
+                    birthdate = request.getParameter("txtBirthDate");
+                    image = request.getParameter("txtImage");
+                    bean.setFullname(fullname);
+                    bean.setBirthdate(birthdate);
+                    bean.setImage(image);
+                    bean.setId(Integer.parseInt(id));
+                    bean.setPassword(password);
+                    boolean updated = bean.updateProfile();
+                    if (updated) {
+                        session = request.getSession();
+                        if (session != null) {
+                            String username = (String) session.getAttribute("USERNAME");
+                            bean.setName(username);
+                            request = loadUserProfileByUsername(request, bean);
+                            url = "students/profile.jsp";
+                        } else {
+                            url = ERROR_PAGE;
+                        }
+                    } else {
+                        url = ERROR_PAGE;
+                    }
+                    break;
             }
         } catch (Exception e) {
+            e.printStackTrace();
             request.setAttribute("ERROR", e.toString());
             url = ERROR_PAGE;
         } finally {

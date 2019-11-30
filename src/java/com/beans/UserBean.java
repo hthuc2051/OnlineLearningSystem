@@ -19,9 +19,26 @@ public class UserBean implements Serializable {
 
     private int id;
     private String name, password, role, fullname, birthdate;
+    private String image, balance;
     UserDao dao = new UserDao();
 
     public UserBean() {
+    }
+
+    public String getBalance() {
+        return balance;
+    }
+
+    public void setBalance(String balance) {
+        this.balance = balance;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public int getId() {
@@ -101,6 +118,12 @@ public class UserBean implements Serializable {
 
     public boolean isUserExisted() throws SQLException, ClassNotFoundException {
         boolean check = dao.checkExistedUsername(name);
+        return check;
+    }
+
+    public boolean updateProfile() throws SQLException, ClassNotFoundException {
+        UserDto dto = new UserDto(id, name, password, role, fullname, image, birthdate, balance);
+        boolean check = dao.updateProfile(dto);
         return check;
     }
 }

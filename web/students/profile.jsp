@@ -84,12 +84,12 @@
         <header class="pt-5 pb-3 bg-image-full" style="background-image: url('https://wallpaperaccess.com/full/1426870.png');">
             <div class="container d-flex align-items-center flex-column">
                 <img class="masthead-avatar mb-3 mt-5 rounded-circle bg-light" src="${USER_PROFILE.image}" style="width: 250px; height: 250px;" alt="">
-                <h1 class="masthead-heading text-uppercase text-white">${USER_PROFILE.fullname}</h1>
+                <h1 class="masthead-heading text-white">${USER_PROFILE.fullname}</h1>
             </div>
         </header>
 
         <!-- Masthead -->
-        <header class="text-dark text-center bg-light" style="height: 450px;">
+        <header class="text-dark text-center bg-light" style="height: 400px;">
             <div class="container d-flex flex-column">
                 <div class="col-md-8 offset-md-2">
                     <div class="card-body">
@@ -124,7 +124,61 @@
                     </div>
                 </div>
             </div>
-            <button type="button" class="btn btn-lg btn-primary mt-3">Edit My Profile</button>
+
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-lg btn-primary mt-3 mb-5" data-toggle="modal" data-target="#profile">Edit My Profile</button>
+
+            <script>
+                function isValidDate(dateString) {
+                    var regEx = /^\d{4}-\d{2}-\d{2}$/;
+                    return dateString.match(regEx) != null;
+                }
+            </script>
+
+            <!-- Modal -->
+            <div class="modal fade " id="profile" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <form action="${pageContext.request.contextPath}/UserController" method="post" accept-charset="UTF-8" 
+                              oninput='confirm_password.setCustomValidity(confirm_password.value != password.value ? "Passwords do not match." : ""); 
+                              dateofbirth.setCustomValidity(isValidDate(dateofbirth.value) != true ? "Invalid Date." : "")'>
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="exampleModalLabel">Edit Profile</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group text-left">
+                                    <label for="fullname">Full Name</label>
+                                    <input type="text" class="form-control" id="fullname" placeholder="John Doe" name="txtFullName" value="${USER_PROFILE.fullname}" required/>
+                                </div>
+                                <div class="form-group text-left">
+                                    <label for="dateofbirth">Date of Birth</label>
+                                    <input type="text" class="form-control" id="dateofbirth" placeholder="2019-12-1" name="txtBirthDate" value="${USER_PROFILE.birthdate}"/>
+                                </div>
+                                <div class="form-group text-left">
+                                    <label for="password">Password</label>
+                                    <input type="password" class="form-control" id="password" placeholder="Your password" name="txtPassword" value=""/>
+                                </div>
+                                <div class="form-group text-left">
+                                    <label for="confirm_password">Confirm-Password</label>
+                                    <input type="password" class="form-control" id="confirm_password" placeholder="Confirm password" name="confirm_password"/>
+                                </div>
+                                <div class="form-group text-left">
+                                    <label for="image">Image</label>
+                                    <input type="text" class="form-control" id="image" placeholder="Image url" name="txtImage" value="${USER_PROFILE.image}"/>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="hidden" name="txtId" value="${USER_PROFILE.id}"/>
+                                <button type="submit" class="btn btn-primary" name="key" value="UPDATE_PROFILE">Save changes</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </header>
 
         <!-- Footer -->
