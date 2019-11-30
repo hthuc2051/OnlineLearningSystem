@@ -43,7 +43,7 @@
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item active">
-                            <a class="nav-link" href="#">Home
+                            <a class="nav-link" href="#"><u>Home</u>
                                 <span class="sr-only">(current)</span>
                             </a>
                         </li>
@@ -63,7 +63,10 @@
                                 <a class="nav-link" href="${viewYourCourses}">Your courses</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-white">Welcome, ${sessionScope.USERNAME}</a>
+                                <custag:url value="UserController" var="profile_link">
+                                    <custag:param name="key" value="VIEW_PROFILE"></custag:param>
+                                </custag:url>
+                                <a class="nav-link text-white" href="${profile_link}">Welcome, ${sessionScope.USERNAME}</a>
                             </li>                            
                             <li class="nav-item">
                                 <custag:url value="CourseController" var="logout">
@@ -110,6 +113,7 @@
                                         <p class="card-text">${dto.description}</p>
                                     </div>
                                     <div class="card-footer">
+                                        <h5 class="card-text" style="color: #ed6663">${dto.price}$</h5>
                                         <custag:url value="CourseController" var="enrollLink">
                                             <custag:param name="key" value="ENROLL_NOW" ></custag:param>
                                             <custag:param name="txtId" value="${dto.id}" ></custag:param>
@@ -160,6 +164,7 @@
                                         <p class="card-text">${dto.description}</p>
                                     </div>
                                     <div class="card-footer">
+                                        <h5 class="card-text" style="color: #ed6663">${dto.price}$</h5>
                                         <custag:url value="CourseController" var="enrollLink">
                                             <custag:param name="key" value="ENROLL_NOW" ></custag:param>
                                             <custag:param name="txtId" value="${dto.id}" ></custag:param>

@@ -62,10 +62,13 @@
                         </custag:if>
                         <custag:if test="${sessionScope.USERNAME != null}">
                             <li class="nav-item active">
-                                <a class="nav-link" href="#">Your courses</a>
+                                <a class="nav-link" href="#"><u>Your courses</u></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-white">Welcome, ${sessionScope.USERNAME}</a>
+                                <custag:url value="UserController" var="profile_link">
+                                    <custag:param name="key" value="VIEW_PROFILE"></custag:param>
+                                </custag:url>
+                                <a class="nav-link text-white" href="${profile_link}">Welcome, ${sessionScope.USERNAME}</a>
                             </li>
                             <li class="nav-item">
                                 <custag:url value="CourseController" var="logout">

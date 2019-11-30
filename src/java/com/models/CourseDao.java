@@ -255,14 +255,14 @@ public class CourseDao implements Serializable {
         List<CourseDto> result = null;
         CourseDto dto = null;
         int id;
-        String name, description;
+        String name, description, price;
         try {
             con = MyConnection.getConnection();
             if (con != null) {
                 result = new ArrayList<>();
-                String sql = "SELECT C.id, C.name, C.description FROM tblCourses C "
+                String sql = "SELECT C.id, C.name, C.description, C.price FROM tblCourses C "
                         + "EXCEPT "
-                        + "SELECT C.id, C.name, C.description "
+                        + "SELECT C.id, C.name, C.description, C.price "
                         + "FROM tblUsers_Courses UC INNER JOIN tblCourses C ON UC.course_id=C.id "
                         + "WHERE UC.user_id = ?";
                 stm = con.prepareStatement(sql);
@@ -272,7 +272,8 @@ public class CourseDao implements Serializable {
                     id = rs.getInt("id");
                     name = rs.getString("name");
                     description = rs.getString("description");
-                    dto = new CourseDto(id, name, description);
+                    price = rs.getString("price");
+                    dto = new CourseDto(id, name, description, price);
                     result.add(dto);
                 }
             }

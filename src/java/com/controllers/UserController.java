@@ -21,7 +21,7 @@ import javax.servlet.http.HttpSession;
  * @author ASUS
  */
 public class UserController extends HttpServlet {
-    
+
     private final String HOME_PAGE = "adminFolder/admin.jsp";
     private final String ERROR_PAGE = "error.jsp";
     private final String PAGE = "loadUser";
@@ -73,6 +73,17 @@ public class UserController extends HttpServlet {
                     request = getUserById(request, bean);
                     url = "adminFolder/userProfile.jsp";
                     break;
+                case "VIEW_PROFILE":
+                    HttpSession session = request.getSession();
+                    if (session != null) {
+                        String username = (String) session.getAttribute("USERNAME");
+                        bean.setName(username);
+                        request = loadUserProfileByUsername(request, bean);
+                        url = "students/profile.jsp";
+                    } else {
+                        url = ERROR_PAGE;
+                    }
+                    break;
             }
         } catch (Exception e) {
             request.setAttribute("ERROR", e.toString());
@@ -81,14 +92,20 @@ public class UserController extends HttpServlet {
             request.getRequestDispatcher(url).forward(request, response);
         }
     }
-    
+
+    private HttpServletRequest loadUserProfileByUsername(HttpServletRequest request, UserBean bean) throws ClassNotFoundException, SQLException {
+        UserDto user = bean.getUserByEmail();
+        request.setAttribute("USER_PROFILE", user);
+        return request;
+    }
+
     private HttpServletRequest loadAllUser(HttpServletRequest request, UserBean bean) throws ClassNotFoundException, SQLException {
         ArrayList<UserDto> listUser = bean.getAllUser();
         request.setAttribute("PAGE", PAGE);
         request.setAttribute("LISTUSER", listUser);
         return request;
     }
-    
+
     private HttpServletRequest insertUser(HttpServletRequest request, UserBean bean) throws ClassNotFoundException, SQLException {
         String userName = request.getParameter("txtUsername");
         String role = request.getParameter("txtRole");
@@ -103,7 +120,7 @@ public class UserController extends HttpServlet {
         request = loadAllUser(request, bean);
         return request;
     }
-    
+
     private HttpServletRequest updateUser(HttpServletRequest request, HttpServletResponse response, UserBean bean) throws ClassNotFoundException, SQLException, ServletException, IOException {
         String name = request.getParameter("name");
         String id = request.getParameter("id");
@@ -151,7 +168,7 @@ public class UserController extends HttpServlet {
         request = loadAllUser(request, bean);
         return request;
     }
-    
+
     private HttpServletRequest deleteUser(HttpServletRequest request, UserBean bean) throws ClassNotFoundException, SQLException {
         String id = request.getParameter("id");
         bean.setId(Integer.parseInt(id));
@@ -164,7 +181,7 @@ public class UserController extends HttpServlet {
         request = loadAllUser(request, bean);
         return request;
     }
-    
+
     private HttpServletRequest getUserById(HttpServletRequest request, UserBean bean) throws ClassNotFoundException, SQLException {
         HttpSession session = request.getSession();
         String email = (String) session.getAttribute("USERNAME");

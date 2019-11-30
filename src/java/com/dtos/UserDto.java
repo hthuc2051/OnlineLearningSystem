@@ -16,6 +16,7 @@ public class UserDto implements Serializable {
     private int id;
     private String name, password, role;
     private String fullname, birthdate;
+    private String balance, image;
 
     public UserDto(int id, String name, String password, String role) {
         this.id = id;
@@ -30,6 +31,16 @@ public class UserDto implements Serializable {
         this.role = role;
         this.fullname = fullname;
         this.birthdate = birthdate;
+    }
+
+    public UserDto(int id, String name, String role, String fullname, String image, String birthdate, String balance) {
+        this.id = id;
+        this.name = name;
+        this.role = role;
+        this.fullname = fullname;
+        this.image = image;
+        this.birthdate = birthdate;
+        this.balance = balance;
     }
 
     public UserDto(int id, String name) {
@@ -89,6 +100,22 @@ public class UserDto implements Serializable {
 
     public void setBirthdate(String birthdate) {
         this.birthdate = birthdate;
+    }
+
+    public String getBalance() {
+        return balance;
+    }
+
+    public void setBalance(String balance) {
+        this.balance = balance;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
 }

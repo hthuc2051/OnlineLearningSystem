@@ -63,9 +63,11 @@
                         </li>
                         <li class="nav-item active">
                             <a class="nav-link" href="#">
-                                <custag:if test="${requestScope.Dto !=null}">
-                                    ${requestScope.Dto.name}
-                                </custag:if>
+                                <u>
+                                    <custag:if test="${requestScope.Dto !=null}">
+                                        ${requestScope.Dto.name}
+                                    </custag:if>
+                                </u>
                                 <span class="sr-only">(current)</span>
                             </a>
                         </li>

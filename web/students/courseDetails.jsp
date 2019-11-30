@@ -63,10 +63,13 @@
                             <a class="nav-link" href="${viewYourCourses}">Your courses</a>
                         </li>
                         <li class="nav-item active">
-                            <a class="nav-link" href="#">Course : 
-                                <custag:if test="${requestScope.Dto !=null}">
-                                    ${requestScope.Dto.name}
-                                </custag:if>
+                            <a class="nav-link" href="#">
+                                <u>
+                                    Course : 
+                                    <custag:if test="${requestScope.Dto !=null}">
+                                        ${requestScope.Dto.name}
+                                    </custag:if>
+                                </u>
                                 <span class="sr-only">(current)</span>
                             </a>
                         </li>

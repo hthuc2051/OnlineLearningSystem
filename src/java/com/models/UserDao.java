@@ -121,12 +121,12 @@ public class UserDao implements Serializable {
 
     public UserDto getUserById(String email) throws ClassNotFoundException, SQLException {
         UserDto dto = null;
-        String name, role;
+        String name, role, fullname, birthdate, image, balance;
         int userId;
         try {
             con = MyConnection.getConnection();
             if (con != null) {
-                String sql = "Select id,username,role from tblUsers Where active = 1 and username = ?";
+                String sql = "Select id,username,role,fullname,image,birthdate,balance from tblUsers Where active = 1 and username = ?";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, email);
                 rs = stm.executeQuery();
@@ -134,7 +134,11 @@ public class UserDao implements Serializable {
                     userId = rs.getInt("id");
                     name = rs.getString("username");
                     role = rs.getString("role");
-                    dto = new UserDto(userId, name, role);
+                    fullname = rs.getString("fullname");
+                    image = rs.getString("image");
+                    birthdate = rs.getString("birthdate");
+                    balance = rs.getString("balance");
+                    dto = new UserDto(userId, name, role, fullname, image, birthdate, balance);
                 }
             }
         } finally {
