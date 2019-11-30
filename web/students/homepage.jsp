@@ -30,7 +30,26 @@
     </head>
 
     <body>
-
+        <script>
+            function closeDialog() {
+                var d = document.getElementById('dialog');
+                d.style.display = "none";
+            }
+        </script>
+        
+        <c:if test="${requestScope.ERROR != null}">
+            <div class="bg-info h-100 pt-5 mt-2" id="dialog" title="dialog" onclick="closeDialog()">
+                <h3 class="text-white text-center">${requestScope.ERROR}</h3>
+                <p class="text-white text-center" >Click to close!</p>
+            </div>
+        </c:if>
+        <c:if test="${requestScope.SUCCESS != null}">
+            <div class="bg-success h-100 pt-5 mt-2" id="dialog" title="dialog" onclick="closeDialog()">
+                <h3 class="text-white text-center">${requestScope.SUCCESS}</h3>
+                <p class="text-white text-center">Click to close!</p>
+            </div>
+        </c:if>
+        
         <!-- Navigation -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
             <div class="container">
@@ -118,7 +137,12 @@
                                             <custag:param name="key" value="ENROLL_NOW" ></custag:param>
                                             <custag:param name="txtId" value="${dto.id}" ></custag:param>
                                         </custag:url>
-                                        <a href="${enrollLink}" class="btn btn-primary">Enroll Now!</a>
+                                        <custag:if test="${sessionScope.USERNAME == null}">
+                                            <a href="${enrollLink}" class="btn btn-primary">Enroll Now!</a>
+                                        </custag:if>
+                                        <custag:if test="${sessionScope.USERNAME != null}">
+                                            <a href="${enrollLink}" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter${dto.id}">Enroll Now!</a>
+                                        </custag:if>
                                     </div>
                                 </div>
                             </div>
@@ -169,7 +193,66 @@
                                             <custag:param name="key" value="ENROLL_NOW" ></custag:param>
                                             <custag:param name="txtId" value="${dto.id}" ></custag:param>
                                         </custag:url>
-                                        <a href="${enrollLink}" class="btn btn-primary">Enroll Now!</a>
+                                        <custag:if test="${sessionScope.USERNAME == null}">
+                                            <a href="${enrollLink}" class="btn btn-primary">Enroll Now!</a>
+                                        </custag:if>
+                                        <c:if test="${sessionScope.USERNAME != null}">
+                                            <a href="${enrollLink}" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter${dto.id}">Enroll Now!</a>
+                                            <form action="${enrollLink}" method="POST">
+                                                <div class="modal fade" id="exampleModalCenter${dto.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title text-success" id="exampleModalLongTitle">Payment Confirm</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="container d-flex flex-column">
+                                                                    <div class="col-md-12">
+                                                                        <div class="card-body">
+                                                                            <div class="row">
+                                                                                <div class="col-lg-6">
+                                                                                    <ul class="list-unstyled mb-0 text-left">
+                                                                                        <li>
+                                                                                            <h5>Course Name:</h5>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <h5>Description:</h5>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <h5>Price:</h5>
+                                                                                        </li>
+                                                                                    </ul>
+                                                                                </div>
+                                                                                <div class="col-lg-6">
+                                                                                    <ul class="list-unstyled mb-0 text-right">
+                                                                                        <li>
+                                                                                            <h5 class="text-black-50">${dto.name}</h5>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <h5 class="text-black-50">${dto.description}</h5>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <h5 class="text-black-50" style="color: #ed6663 !important">${dto.price}$</h5>
+                                                                                        </li>
+                                                                                    </ul>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="submit" class="btn btn-success bg-success">Confirm</button>
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </c:if>
                                     </div>
                                 </div>
                             </div>

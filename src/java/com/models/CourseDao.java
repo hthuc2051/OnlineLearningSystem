@@ -95,18 +95,19 @@ public class CourseDao implements Serializable {
 
     public CourseDto findCourseById(int id) throws ClassNotFoundException, SQLException {
         CourseDto dto = null;
-        String name, description;
+        String name, description, price;
         try {
             con = MyConnection.getConnection();
             if (con != null) {
-                String sql = "Select id, name,description from tblCourses Where id=?";
+                String sql = "Select id, name,description, price from tblCourses Where id=?";
                 stm = con.prepareStatement(sql);
                 stm.setInt(1, id);
                 rs = stm.executeQuery();
                 while (rs.next()) {
                     name = rs.getString("name");
                     description = rs.getString("description");
-                    dto = new CourseDto(id, name, description);
+                    price = rs.getString("price");
+                    dto = new CourseDto(id, name, description, price);
                 }
             }
         } finally {

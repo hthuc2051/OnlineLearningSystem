@@ -126,4 +126,15 @@ public class UserBean implements Serializable {
         boolean check = dao.updateProfile(dto);
         return check;
     }
+
+    public boolean updateBalance() throws SQLException, ClassNotFoundException {
+        UserDto dto = new UserDto(id, name, password, role, fullname, image, birthdate, balance);
+        boolean check = dao.updateBalance(dto);
+        return check;
+    }
+
+    public UserDto getUserBalanceByUserId() throws ClassNotFoundException, ClassNotFoundException, SQLException {
+        UserDto dto = dao.getUserBalanceByUserId(id);
+        return dto;
+    }
 }

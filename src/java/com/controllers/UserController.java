@@ -117,9 +117,23 @@ public class UserController extends HttpServlet {
                         url = ERROR_PAGE;
                     }
                     break;
+                case "Recharge":
+                    String money = request.getParameter("txtMoney");
+                    id = request.getParameter("id");
+                    bean.setId(Integer.parseInt(id));
+                    UserDto dto = bean.getUserBalanceByUserId();
+                    String balance = dto.getBalance();
+
+                    double dBalance = Double.parseDouble(balance);
+                    double dMoney = Double.parseDouble(money);
+                    double userNewBalance = dBalance + dMoney;
+                    userNewBalance = (double) Math.round(userNewBalance * 100) / 100;
+                    bean.setBalance(String.valueOf(userNewBalance));
+                    bean.updateBalance();
+                    request = loadAllUser(request, bean);
+                    break;
             }
         } catch (Exception e) {
-            e.printStackTrace();
             request.setAttribute("ERROR", e.toString());
             url = ERROR_PAGE;
         } finally {

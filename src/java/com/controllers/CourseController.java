@@ -6,7 +6,9 @@
 package com.controllers;
 
 import com.beans.CourseBean;
+import com.beans.UserBean;
 import com.dtos.CourseDto;
+import com.dtos.UserDto;
 import com.models.UserDao;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -223,25 +225,65 @@ public class CourseController extends HttpServlet {
                             url = LOGIN_PAGE;
                         } else {
                             String userId = (String) session.getAttribute("USER_ID");
-                            boolean check = bean.enrollCourse(Integer.parseInt(courseId), Integer.parseInt(userId));
-                            if (check) {
-                                session.setAttribute("USER_ID", userId);
-                                // load unenroll course by username
-                                listCourses = bean.getUnEnrollCoursesByUsername(userId);
-                                top4Courses = new ArrayList<>();
-                                if (listCourses != null && listCourses.size() > 4) {
-                                    for (int i = 0; i < 4; i++) {
-                                        top4Courses.add(listCourses.get(i));
+                            String email = (String) session.getAttribute("USERNAME");
+                            UserBean userBean = new UserBean();
+                            userBean.setName(email);
+                            UserDto dto = userBean.getUserByEmail();
+                            String balance = dto.getBalance();
+                            String error;
+                            if (balance != null && !balance.isEmpty()) {
+                                double dBalance = Double.parseDouble(balance);
+                                String price = bean.getCourseDetails(Integer.parseInt(courseId)).getPrice();
+                                if (price != null && !price.isEmpty()) {
+                                    double dPrice = Double.parseDouble(price);
+                                    if (dBalance < dPrice || (dBalance - dPrice) < 0) {
+                                        // insufficient money
+                                        error = "You don't have enough money!";
+                                        request.setAttribute("ERROR", error);
+                                        listCourses = bean.getUnEnrollCoursesByUsername(userId);
+                                        top4Courses = new ArrayList<>();
+                                        if (listCourses != null && listCourses.size() > 4) {
+                                            for (int i = 0; i < 4; i++) {
+                                                top4Courses.add(listCourses.get(i));
+                                            }
+                                        }
+                                        request.setAttribute("ListTop4", top4Courses);
+                                        request.setAttribute("ListAllCourses", listCourses);
+                                        url = HOME_USER;
+                                    } else {
+                                        // add course then update balance
+                                        boolean check = bean.enrollCourse(Integer.parseInt(courseId), Integer.parseInt(userId));
+                                        if (check) {
+                                            session.setAttribute("USER_ID", userId);
+                                            // load unenroll course by username
+                                            listCourses = bean.getUnEnrollCoursesByUsername(userId);
+                                            top4Courses = new ArrayList<>();
+                                            if (listCourses != null && listCourses.size() > 4) {
+                                                for (int i = 0; i < 4; i++) {
+                                                    top4Courses.add(listCourses.get(i));
+                                                }
+                                            }
+                                            request.setAttribute("ListTop4", top4Courses);
+                                            request.setAttribute("ListAllCourses", listCourses);
+                                            double userNewBalance = dBalance - dPrice;
+                                            userNewBalance = (double) Math.round(userNewBalance * 100) / 100;
+                                            userBean.setId(Integer.parseInt(userId));
+                                            userBean.setBalance(String.valueOf(userNewBalance));
+                                            boolean success = userBean.updateBalance();
+                                            if (success) {
+                                                String successString = "Purchase successfully!";
+                                                request.setAttribute("SUCCESS", successString);
+                                                url = HOME_USER;
+                                            } else {
+                                                url = ERROR_PAGE;
+                                            }
+                                        } else {
+                                            url = ERROR_PAGE;
+                                        }
                                     }
                                 }
-                                request.setAttribute("ListTop4", top4Courses);
-                                request.setAttribute("ListAllCourses", listCourses);
-                                url = HOME_USER;
-                            } else {
-                                url = ERROR_PAGE;
                             }
                         }
-
                         break;
                 }
             }

@@ -12,7 +12,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -148,6 +151,29 @@ public class UserDao implements Serializable {
         return dto;
     }
 
+    public UserDto getUserBalanceByUserId(int id) throws ClassNotFoundException, SQLException {
+        UserDto dto = null;
+        String balance;
+        try {
+            con = MyConnection.getConnection();
+            if (con != null) {
+                String sql = "Select balance from tblUsers Where active = 1 and id = ?";
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, id);
+                rs = stm.executeQuery();
+                if (rs.next()) {
+                    balance = rs.getString("balance");
+                    dto = new UserDto();
+                    dto.setId(id);
+                    dto.setBalance(balance);
+                }
+            }
+        } finally {
+            closeConnection();
+        }
+        return dto;
+    }
+
     public String getUserAuth(String username, String password) throws SQLException, ClassNotFoundException {
         String role = "failed";
         try {
@@ -190,14 +216,18 @@ public class UserDao implements Serializable {
     public boolean createNewUser(String username, String password) throws SQLException, ClassNotFoundException {
         boolean check = false;
         try {
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDateTime now = LocalDateTime.now();
             con = MyConnection.getConnection();
             if (con != null) {
-                String sql = "INSERT INTO tblUsers (username, password, role, active) VALUES(?,?,?,?)";
+                String sql = "INSERT INTO tblUsers (username, password, role, active, balance, birthdate) VALUES(?,?,?,?,?,?)";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, username);
                 stm.setString(2, password);
                 stm.setString(3, "user");
                 stm.setString(4, "True");
+                stm.setString(5, "0");
+                stm.setString(6, dtf.format(now));
                 check = stm.executeUpdate() > 0;
             }
         } finally {
@@ -246,6 +276,23 @@ public class UserDao implements Serializable {
                     stm.setString(3, dto.getBirthdate());
                     stm.setInt(4, dto.getId());
                 }
+                check = stm.executeUpdate() > 0;
+            }
+        } finally {
+            closeConnection();
+        }
+        return check;
+    }
+
+    public boolean updateBalance(UserDto dto) throws ClassNotFoundException, SQLException {
+        boolean check = false;
+        try {
+            con = MyConnection.getConnection();
+            if (con != null) {
+                String sql = "update tblUsers set balance = ? where id = ?";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, dto.getBalance());
+                stm.setInt(2, dto.getId());
                 check = stm.executeUpdate() > 0;
             }
         } finally {
